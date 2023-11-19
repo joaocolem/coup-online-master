@@ -229,6 +229,7 @@ export default class Coup extends Component {
     render() {
         let actionDecision = null
         let currentPlayer = null
+        let currentPlayerName = null
         let revealDecision = null
         let challengeDecision = null
         let blockChallengeDecision = null
@@ -246,6 +247,7 @@ export default class Coup extends Component {
             actionDecision = <ActionDecision doneAction={this.doneAction} deductCoins={this.deductCoins} name={this.props.name} socket={this.props.socket} money={this.state.players[this.state.playerIndex].money} players={this.state.players}></ActionDecision>
         }
         if(this.state.currentPlayer) {
+            currentPlayerName = this.state.currentPlayer
             currentPlayer = <p>It is <b>{this.state.currentPlayer}</b>'s turn</p>
         }
         if(this.state.revealingRes) {
@@ -355,7 +357,7 @@ export default class Coup extends Component {
                     <EventLog logs={this.state.logs}></EventLog>
                 </div>
 
-                <PlayerBoard players={this.state.players} heroName={this.props.name} showHero={false}></PlayerBoard>
+                <PlayerBoard players={this.state.players} heroName={this.props.name} currentPlayer={currentPlayerName}></PlayerBoard>
                 <div className="DecisionsSection">
                     {waiting}
                     {revealDecision}
@@ -369,7 +371,6 @@ export default class Coup extends Component {
                     {playAgain}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                    <PlayerBoard players={this.state.players} heroName={this.props.name} showHero={true} />
                     <div className="InfluenceSection">
                         {influences}
                     </div>

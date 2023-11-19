@@ -7,7 +7,7 @@
     margin-right: 10px;
     margin-left: 10px;
     border-radius: 5px;
-    width: 100px;
+    width: 150px;
 }
 
 .PlayerBoardItem h2 {
@@ -34,3 +34,12 @@
     align-items: center;
     gap: 0 30px;
 }
+
+.blinking-border {
+    transition: border-color 0.7s ease;
+  }
+  
+  .blinking-border.blink {
+    border-color: blue;
+  }
+  

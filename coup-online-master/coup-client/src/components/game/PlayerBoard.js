@@ -2,9 +2,8 @@ import React from 'react';
 import PlayerItem from './PlayerItem';
 import './PlayerBoardStyles.css';
 
-export default function PlayerBoard({ players, heroName, showHero }) {
+export default function PlayerBoard({ players, heroName, currentPlayer }) {
     const heroIndex = players.findIndex(player => player.name === heroName);
-
     if (heroIndex === -1) {
 
         return null;
@@ -27,10 +26,10 @@ export default function PlayerBoard({ players, heroName, showHero }) {
     ];
 
     const boardItems = rearrangedPlayers.map((player, index) => (
-        <PlayerItem key={index} player={player} position={positions[index]} />
+        <PlayerItem key={index} player={player} position={positions[index]} isCurrentPlayer={player.name===currentPlayer}/>
     ));
 
-    const heroItem = showHero ? <PlayerItem player={playerHero} position={positions[5]} /> : null;
+    const heroItem = <PlayerItem player={playerHero} position={positions[5]} isCurrentPlayer={playerHero.name == currentPlayer}  />;
 
     return (
         <div className="player-board">
