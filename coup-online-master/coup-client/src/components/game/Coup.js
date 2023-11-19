@@ -12,6 +12,8 @@ import EventLog from './EventLog';
 import ReactModal from 'react-modal';
 import CheatSheetModal from '../CheatSheetModal';
 import RulesModal from '../RulesModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChessKnight, faShip, faSkull, faCrown, faHandshake } from '@fortawesome/free-solid-svg-icons';
 
 export default class Coup extends Component {
 
@@ -273,24 +275,54 @@ export default class Coup extends Component {
             isWaiting = false;
             blockDecision = <BlockDecision closeOtherVotes={this.closeOtherVotes} doneBlockVote={this.doneChallengeBlockingVote} name={this.props.name} action={this.state.blockingAction} socket={this.props.socket} ></BlockDecision>
         }
-        if(this.state.playerIndex != null && !this.state.isDead) {
-            influences = <>
-            <p>Your Influences</p>
-                {this.state.players[this.state.playerIndex].influences.map((influence, index) => {
-                    return  <div key={index} className="InfluenceUnitContainer">
-                                <span className="circle" style={{backgroundColor: `${this.influenceColorMap[influence]}`}}></span>
-                                <br></br>
+        if (this.state.playerIndex != null && !this.state.isDead) {
+            influences = (
+                <div className="InfluencesContainer">
+                    {this.state.players[this.state.playerIndex].influences.map((influence, index) => {
+                        let icon = null;
+        
+                        switch (influence) {
+                            case 'duke':
+                                icon = faChessKnight;
+                                break;
+                            case 'captain':
+                                icon = faShip;
+                                break;
+                            case 'assassin':
+                                icon = faSkull;
+                                break;
+                            case 'contessa':
+                                icon = faCrown;
+                                break;
+                            case 'ambassador':
+                                icon = faHandshake;
+                                break;
+                            default:
+                                // Pode adicionar um ícone padrão ou lidar com outros casos
+                                break;
+                        }
+        
+                        return (
+                            <div key={index} className="InfluenceUnitContainer">
+                                <FontAwesomeIcon icon={icon} style={{ color: `${this.influenceColorMap[influence]}` }} />
+                                <br />
                                 <h3>{influence}</h3>
                             </div>
-                    })
-                }
-            </>
-            
-            coins = <p>Coins: {this.state.players[this.state.playerIndex].money}</p>
+                        );
+                    })}
+                </div>
+            );
+        
+            coins = <p style={{ textAlign: 'center' }}>Coins: {this.state.players[this.state.playerIndex].money}</p>;
         }
-        if(isWaiting && !this.state.isDead) {
-            waiting = <p>Waiting for other players...</p>
+        
+        
+        
+        if (isWaiting && !this.state.isDead) {
+            waiting = <p className="waitingMessage">Waiting for other players...</p>;
         }
+
+        
         if(this.state.disconnected) {
             return (
                 <div className="GameContainer">
@@ -322,10 +354,8 @@ export default class Coup extends Component {
                     <CheatSheetModal/>
                     <EventLog logs={this.state.logs}></EventLog>
                 </div>
-                <div className="InfluenceSection">
-                    {influences}
-                </div>
-                <PlayerBoard players={this.state.players}></PlayerBoard>
+
+                <PlayerBoard players={this.state.players} heroName={this.props.name} showHero={false}></PlayerBoard>
                 <div className="DecisionsSection">
                     {waiting}
                     {revealDecision}
@@ -338,8 +368,14 @@ export default class Coup extends Component {
                     {pass}
                     {playAgain}
                 </div>
-                <b>{this.state.winner}</b>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                    <PlayerBoard players={this.state.players} heroName={this.props.name} showHero={true} />
+                    <div className="InfluenceSection">
+                        {influences}
+                    </div>
+            </div>
                 {this.state.playAgain}
+                <b>{this.state.winner}</b>
             </div>
         )
     }

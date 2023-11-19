@@ -1,0 +1,35 @@
+/* PlayerItemStyles.css */
+.PlayerBoardItem {
+    background-color: #73C373;
+    margin-bottom: 20px;
+    padding: 5px;
+    text-align: center;
+    margin-right: 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    width: 100px;
+}
+
+.PlayerBoardItem h2 {
+    margin-top: 10px;
+    font-weight: lighter;
+    color: white;
+    line-height: 80%;
+}
+
+.PlayerBoardItem p {
+    line-height: 50%;
+    font-weight: regular;
+    color: white;
+}
+
+.PlayerBoardItem .fa-coins,
+.PlayerBoardItem .fa-user {
+    margin-right: 5px;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

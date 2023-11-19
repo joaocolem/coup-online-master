@@ -379,3 +379,13 @@
         margin-left: 10%;
     }
   }
+
+
+.InfluencesContainer {
+    margin-top: 20px;
+    display: flex;
+}
+
+.waitingMessage {
+  margin-bottom: 82px; 
+}
