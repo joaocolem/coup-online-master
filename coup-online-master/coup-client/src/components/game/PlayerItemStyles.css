@@ -25,11 +25,12 @@
 
 .PlayerBoardItem .fa-coins,
 .PlayerBoardItem .fa-user {
-    margin-right: 5px;
+    margin-right: 0px;
 }
 
 .flex-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 0 30px;
 }

@@ -6,7 +6,7 @@ export default function PlayerBoard({ players, heroName, showHero }) {
     const heroIndex = players.findIndex(player => player.name === heroName);
 
     if (heroIndex === -1) {
-        console.error(`Jogador herói '${heroName}' não encontrado.`);
+
         return null;
     }
 
@@ -18,12 +18,12 @@ export default function PlayerBoard({ players, heroName, showHero }) {
     ];
 
     const positions = [
-        { top: '300px', left: '150px' }, 
-        { top: '150px', left: '150px' }, 
-        { top: '50px',  left: '300px' },  
-        { top: '150px', left: '450px' },
-        { top: '300px', left: '450px' },
-        { top: '400px', left: '300px' },   // Posição 6 (hero)
+        { top: '300px', left: '450px' }, 
+        { top: '150px', left: '450px' }, 
+        { top: '50px',  left: '600px' },  
+        { top: '150px', left: '750px' },
+        { top: '300px', left: '750px' },
+        { top: '400px', left: '600px' },   // Posição 6 (hero)
     ];
 
     const boardItems = rearrangedPlayers.map((player, index) => (
