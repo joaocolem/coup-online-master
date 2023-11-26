@@ -88,10 +88,6 @@ const CreateGame = () => {
 
     const startGame = () => {
         socket.emit('startGameSignal', players);
-
-        socket.on('startGame', () => {
-            setIsGameStarted(true);
-        });
     };
 
     const copyCode = () => {
@@ -108,6 +104,10 @@ const CreateGame = () => {
         if (socket) {
             joinParty(socket);
 
+            socket.on('startGame', () => {
+                setIsGameStarted(true);
+            });
+
             return () => {
                 socket.disconnect();
             };
@@ -117,10 +117,14 @@ const CreateGame = () => {
     useEffect(() => {
         if (isGameStarted) {
             return () => {
-                return <Coup name={name} socket={socket}></Coup>;
+                // Cleanup logic if needed
             };
         }
     }, [isGameStarted]);
+
+    if (isGameStarted) {
+        return <Coup name={name} socket={socket}></Coup>;
+    }
 
     let error = null;
     let roomCodeElem = null;
