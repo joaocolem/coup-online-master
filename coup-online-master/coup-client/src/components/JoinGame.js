@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import Coup from './game/Coup';
 import axios from 'axios';
+import { useUser} from './UserContext'
 
 const JoinGame = () => {
-    const [name, setName] = useState('');
+    const {user} = useUser();
+    const [name, setName] = useState(useUser ?? '');
     const [roomCode, setRoomCode] = useState('');
     const [players, setPlayers] = useState([]);
     const [isInRoom, setIsInRoom] = useState(false);
