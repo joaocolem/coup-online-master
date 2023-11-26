@@ -3,11 +3,14 @@ import io from 'socket.io-client';
 import { ReactSortable } from 'react-sortablejs';
 import Coup from './game/Coup';
 import axios from 'axios';
+import { useUser} from './UserContext'
 
 const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
 const CreateGame = () => {
-    const [name, setName] = useState('');
+    const {user} = useUser();
+
+    const [name, setName] = useState(user.nickname ?? '');
     const [roomCode, setRoomCode] = useState('');
     const [copied, setCopied] = useState(false);
     const [isInRoom, setIsInRoom] = useState(false);
@@ -18,6 +21,7 @@ const CreateGame = () => {
     const [errorMsg, setErrorMsg] = useState('');
     const [canStart, setCanStart] = useState(false);
     const [socket, setSocket] = useState(null);
+
 
     const onNameChange = (name) => {
         setName(name);
