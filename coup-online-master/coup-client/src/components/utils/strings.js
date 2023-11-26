@@ -1,5 +1,10 @@
-// strings.js
-const strings = {
+// src/components/utils/strings.js
+import { useUser } from '../UserContext';
+
+const LanguageStrings = () => {
+  const { language } = useUser();
+
+  const strings = {
   en: {
     challengeSteal: "{source} is trying to Steal from {target}",
     challengeTax: "{source} is trying to collect Tax (3 coins)",
@@ -28,6 +33,66 @@ const strings = {
     lessNameError: 'Name must be less than 11 characters',
     ready: "Ready!",
     notReady: "Not Ready",
+    startGame: "Start Game",
+    welcomeMessage: "Welcome to Coup",
+    subtitle: "A game of deduction and deception",
+    createGame: "Create Game",
+    creating: "Creating...",
+    create: "Create",
+    joinGame: "Join Game",
+    login: "Login",
+    youReady: "You are ready!",
+    yourName: "Your Name",
+    profile: "Profile",
+    rules: "Rules",
+    players: "players",
+    ruleP1: "On your turn, you may choose an action to play. The action you choose may or may not correspond to the influences that you possess. For the action that you choose, other players may potentially block or challenge it. ",
+    ruleP2: ": When a player declares an action they are declaring to the rest of the players that they have a certain influence, and any other player can challenge it. When a player is challenged, the challenged player must reveal the correct influence associated with their action. If they reveal the correct influence, the challenger player will lose an influence. However, if they fail to reveal the correct influence the challenged player will lose their incorrectly revealed influence.",
+    ruleBlock: "Block",
+    ruleP3: ': When the any of the actions "Foreign Aid", "Steal", and "Assasinate" are used, they can be blocked. Once again, any player can claim to have the correct influence to block. However, blocks can also be challenged by any player. If a block fails, the original action will take place.',
+    ruleP4: 'If a player loses all their influences, they are out of the game. The last player standing wins!',
+    ruleP5: '  At this time, if a player disconnects, the game must be recreated.',
+    influences: 'Influences',
+    steal: "STEAL",
+    ruleSteal: ": Steal 2 coins from a target. Blockable by ",
+    ruleCanblock: ". Can block ",
+    assassin: "Assassin",
+    assassinate: "ASSASSINATE",
+    ruleAssassinate: ": Pay 3 coins to choose a target to assassinate (target loses an influence). Blockable by ",
+    contessa: "Contessa",
+    duke: "Duke",
+    tax: "TAX",
+    ruleTax: ': Collect 3 coins from the treasury. Not blockable. Can block Foreign Aid.',
+    exchange: "Exchange",
+    ruleExchange: ": Draw 2 influences into your hand and pick any 2 influences to put back. Not blockable. Can block ",
+    assasinations: "assassinations",
+    notBlockable: ". Not blockable.",
+    otherActions: "otherActions",
+    income: "income",
+    ruleIncome: ": Collect 1 coins from the treasury.",
+    foreingAid: "Foreing Aid",
+    ruleForeingAid: ": Collect 2 coins from the treasury. Blockable by ",
+    coup: "Coup",
+    ruleCoup: ": Pay 7 coins and choose a target to lose an influence. If a player starts their turn with 10 or more coins, they must Coup. Not Blockable.",
+    yourProfile: "Your Profile",
+    playedMatches: "Total Matches: ",
+    wins: "Victories: ",
+    your: "Your",
+    reavealMessage: " has been challenged! If you don't reveal ",
+    or: "or",
+    loseInfluence: " you'll lose influence!",
+    joining: "Joining",
+    join: 'Join',
+
+
+    
+
+
+
+
+
+
+
 
   },
   pt: {
@@ -45,10 +110,74 @@ const strings = {
     ambassador: "Embaixador",
     captain: "Capitão",
     chooseInfluenceToLose: "Escolha uma influencia para perder",
+    playAgain: "Jogar Novamente",
+    eventLog: "Registro de Eventos",
+    chooseInfluencesToKeep: "Escolha qual(is) influência(s) manter",
+    signIn: "Cadastrar",
+    password: "Senha:",
+    registration: "Cadastro",
+    dragPlayersMessage: "Você pode arrastar para reorganizar os jogadores em uma ordem específica!",
+    roomCode: "CÓDIGO DA SALA:",
+    copiedToClip: "Copiado para a área de transferência",
+    pleaseEnterName: "Por favor, insira seu nome",
+    lessNameError: 'O nome deve ter menos de 11 caracteres',
+    ready: "Pronto!",
+    notReady: "Não Pronto",
+    startGame: "Iniciar Jogo",
+    welcomeMessage: "Bem-vindo ao Coup",
+    subtitle: "Um jogo de dedução e decepção",
+    createGame: "Criar Jogo",
+    creating: "Criando...",
+    create: "Criar",
+    joinGame: "Entrar no Jogo",
+    login: "Entrar",
+    youReady: "Você está pronto!",
+    yourName: "Seu Nome",
+    profile: "Perfil",
+    rules: "Regras",
+    players: "jogadores",
+    ruleP1: "Na sua vez, você pode escolher uma ação para jogar. A ação escolhida pode ou não corresponder às influências que você possui. Para a ação que você escolher, outros jogadores podem potencialmente bloquear ou desafiar.",
+    ruleP2: ": Quando um jogador declara uma ação, ele está declarando aos outros jogadores que possui uma determinada influência, e qualquer outro jogador pode desafiá-lo. Quando um jogador é desafiado, ele deve revelar a influência correta associada à sua ação. Se revelar a influência correta, o jogador que desafiou perderá uma influência. No entanto, se falhar em revelar a influência correta, o jogador desafiado perderá a influência incorretamente revelada.",
+    ruleBlock: "Bloquear",
+    ruleP3: ': Quando as ações "Ajuda Externa", "Roubo" e "Assassinato" são usadas, elas podem ser bloqueadas. Novamente, qualquer jogador pode alegar ter a influência correta para bloquear. No entanto, os bloqueios também podem ser desafiados por qualquer jogador. Se um bloqueio falhar, a ação original ocorrerá.',
+    ruleP4: 'Se um jogador perder todas as suas influências, ele está fora do jogo. O último jogador restante vence!',
+    ruleP5: 'Neste momento, se um jogador desconectar, o jogo deve ser recriado.',
+    influences: 'Influências',
+    steal: "ROUBAR",
+    ruleSteal: ": Roube 2 moedas de um alvo. Bloqueável por ",
+    ruleCanblock: ". Pode bloquear ",
+    assassin: "Assassino",
+    assassinate: "ASSASSINAR",
+    ruleAssassinate: ": Pague 3 moedas para escolher um alvo para assassinar (o alvo perde uma influência). Bloqueável por ",
+    contessa: "Condessa",
+    duke: "Duque",
+    tax: "IMPOSTO",
+    ruleTax: ': Coleta 3 moedas do tesouro. Não bloqueável. Pode bloquear Ajuda Externa.',
+    exchange: "Trocar",
+    ruleExchange: ": Compre 2 influências para a sua mão e escolha quais 2 influências devem ser devolvidas. Não bloqueável. Pode bloquear ",
+    assasinations: "assassinatos",
+    notBlockable: ". Não bloqueável.",
+    otherActions: "Outras Ações",
+    income: "Renda",
+    ruleIncome: ": Coleta 1 moeda do tesouro.",
+    foreingAid: "Ajuda Externa",
+    ruleForeingAid: ": Coleta 2 moedas do tesouro. Bloqueável por ",
+    coup: "Golpe",
+    ruleCoup: ": Pague 7 moedas e escolha um alvo para perder uma influência. Se um jogador começar sua vez com 10 ou mais moedas, ele deve dar um Golpe. Não bloqueável.",
+    yourProfile: "Seu Perfil",
+    playedMatches: "Partidas Jogadas: ",
+    wins: "Vitórias: ",
+    your: "Sua(seu)",
+    reavealMessage: " foi desafiado(a)! Se você não revelar ",
+    or: "ou",
+    loseInfluence: " você perderá uma influência!",
+    joining: "Entrando",
+    join: 'Entrar',
   },
 };
 
-const defaultLanguage = 'pt'; // Idioma padrão
 
+  return strings[language];
+};
 
-export default strings[defaultLanguage];
+export default LanguageStrings;

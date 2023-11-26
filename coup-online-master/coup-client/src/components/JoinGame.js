@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import Coup from './game/Coup';
 import axios from 'axios';
 import { useUser} from './UserContext'
+import  LanguageStrings from './utils/strings'
 
 const JoinGame = () => {
     const {user} = useUser();
@@ -16,6 +17,7 @@ const JoinGame = () => {
     const [isGameStarted, setIsGameStarted] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [socket, setSocket] = useState(null);
+    const strings = LanguageStrings()
 
     const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
@@ -125,18 +127,18 @@ const JoinGame = () => {
         error = <b>{errorMsg}</b>;
     }
     if (isInRoom) {
-        joinReady = <button className="joinButton" onClick={reportReady} disabled={isReady}>Ready</button>;
+        joinReady = <button className="joinButton" onClick={reportReady} disabled={isReady}>{strings.ready}</button>;
     } else {
-        joinReady = <button className="joinButton" onClick={attemptJoinParty} disabled={isLoading}>{isLoading ? 'Joining...' : 'Join'}</button>;
+        joinReady = <button className="joinButton" onClick={attemptJoinParty} disabled={isLoading}>{isLoading ? (strings.joining) : (strings.join)}</button>;
     }
     if (isReady) {
-        ready = <b style={{ color: '#5FC15F' }}>You are ready!</b>;
+        ready = <b style={{ color: '#5FC15F' }}>{strings.youReady}</b>;
         joinReady = null;
     }
 
     return (
         <div className="joinGameContainer">
-            <p>Your Name</p>
+            <p>{strings.yourName}</p>
             <input
                 type="text" value={name} disabled={isLoading}
                 onChange={(e) => {
@@ -150,7 +152,7 @@ const JoinGame = () => {
                     }
                 }}
             />
-            <p>Room Code</p>
+            <p>{strings.roomCode}</p>
             <input
                 type="text" value={roomCode} disabled={isLoading}
                 onChange={(e) => onCodeChange(e.target.value)}
@@ -166,10 +168,10 @@ const JoinGame = () => {
                     let ready = null;
                     let readyUnitColor = '#E46258';
                     if (item.isReady) {
-                        ready = <b>Ready!</b>;
+                        ready = <b>{strings.ready}</b>;
                         readyUnitColor = '#73C373';
                     } else {
-                        ready = <b>Not Ready</b>;
+                        ready = <b>{strings.notReady}</b>;
                     }
                     return (
                         <div className="readyUnit" style={{ backgroundColor: readyUnitColor }} key={index}>

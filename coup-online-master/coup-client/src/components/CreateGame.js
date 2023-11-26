@@ -4,11 +4,13 @@ import { ReactSortable } from 'react-sortablejs';
 import Coup from './game/Coup';
 import axios from 'axios';
 import { useUser} from './UserContext'
-import  strings from './utils/strings';
+import  LanguageStrings from './utils/strings'
+
 
 const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
 const CreateGame = () => {
+    const strings = LanguageStrings()
     const {user} = useUser();
 
     const [name, setName] = useState(user.nickname ?? '');
@@ -128,7 +130,8 @@ const CreateGame = () => {
     }, [isGameStarted]);
 
     if (isGameStarted) {
-        return <Coup name={name} socket={socket}></Coup>;
+        return <Coup name={name} socket={socket} ></Coup>;
+
     }
 
     let error = null;
@@ -141,7 +144,7 @@ const CreateGame = () => {
         createButtonElem = (
             <>
                 <button className="createButton" onClick={createParty} disabled={isLoading}>
-                    {isLoading ? 'Creating...' : 'Create'}
+                    {isLoading ? (strings.creating) : (strings.create)}
                 </button>
                 <br />
             </>
@@ -169,7 +172,7 @@ const CreateGame = () => {
     }
 
     if (canStart) {
-        startGameElem = <button className="startGameButton" onClick={startGame}>Start Game</button>;
+        startGameElem = <button className="startGameButton" onClick={startGame}>{strings.startGame}</button>;
     }
 
     return (
@@ -202,7 +205,7 @@ const CreateGame = () => {
                         let ready = null;
                         let readyUnitColor = '#E46258';
                         if (item.isReady) {
-                            ready = <b>{strings.ready}!</b>;
+                            ready = <b>{strings.ready}</b>;
                             readyUnitColor = '#73C373';
                         } else {
                             ready = <b>{strings.notReady}</b>;

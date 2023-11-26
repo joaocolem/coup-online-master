@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './CadastroFormStyle.css';
-import  strings from './utils/strings';
+import  LanguageStrings from './utils/strings';
 
 
 const CadastroForm = () => {
@@ -8,7 +8,8 @@ const CadastroForm = () => {
   const [nickname, setNickname] = useState('');
   const [senha, setSenha] = useState('');
   const [mensagemErro, setMensagemErro] = useState('');
-
+  const strings = LanguageStrings()
+  
   const handleCadastro = () => {
     // Verifica se todos os campos estão preenchidos e o email tem o formato correto
     if (email && nickname && senha && email.includes('@') && email.includes('.com')) {

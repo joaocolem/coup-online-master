@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import './CadastroFormStyle.css';
+import  LanguageStrings from './utils/strings';
+
 
 const UserProfile = () => {
+  const strings = LanguageStrings()
   const [email, setEmail] = useState('usuario@example.com');
   const [nickname, setNickname] = useState('Usuario123');
   const [quantidadePartidas, setQuantidadePartidas] = useState(20);
@@ -9,12 +12,12 @@ const UserProfile = () => {
 
   return (
     <div className="user-profile-container">
-      <h2>Perfil do Usuário</h2>
+      <h2>{strings.yourProfile}</h2>
       <div className="profile-info">
         <p><strong>Email:</strong> {email}</p>
         <p><strong>Nickname:</strong> {nickname}</p>
-        <p><strong>Partidas Jogadas:</strong> {quantidadePartidas}</p>
-        <p><strong>Vitórias:</strong> {quantidadeVitorias}</p>
+        <p><strong>{strings.playedMatches}</strong> {quantidadePartidas}</p>
+        <p><strong>{strings.wins}:</strong> {quantidadeVitorias}</p>
       </div>
     </div>
   );

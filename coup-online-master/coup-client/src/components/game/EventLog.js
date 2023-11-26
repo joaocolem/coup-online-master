@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import  strings from '../utils/strings';
+import  LanguageStrings from '../utils/strings';
 
 const EventLog = (props) => {
+    const strings = LanguageStrings()
     const messagesEndRef = useRef(null);
 
     const scrollToBottom = () => {

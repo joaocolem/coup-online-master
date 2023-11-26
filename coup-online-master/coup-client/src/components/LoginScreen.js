@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useUser } from '../components/UserContext'; // Importa o hook useUser
 import './CadastroFormStyle.css';
+import  LanguageStrings from './utils/strings'
 
 const LoginScreen = () => {
   const history = useHistory();
@@ -10,6 +11,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mensagemErro, setMensagemErro] = useState('');
+  const strings = LanguageStrings()
 
   const handleLogin = () => {
     // Lógica de autenticação (pode ser ajustada conforme a lógica real de autenticação no seu aplicativo)
@@ -44,7 +46,7 @@ const LoginScreen = () => {
           />
         </div>
         <div className="form-group">
-          <label>Senha:</label>
+          <label>{strings.password}</label>
           <input
             type="password"
             value={senha}

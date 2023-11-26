@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
+import  strings from './utils/strings'
+
 
 export default class RulesModal extends Component {
 
@@ -42,39 +44,33 @@ export default class RulesModal extends Component {
    
     <div className="RulesContainer">
         <div className="RulesContent">
-            <h2>Rules</h2>
-            <p>2-6 players</p>
-            <p>On your turn, you may choose an action to play. The action you choose may or may not correspond to the influences that you possess. 
-                For the action that you choose, other players may potentially block or challenge it. </p>
-            <p><b>Challenge</b>: When a player declares an action they are declaring to the rest of the players that they have a certain influence, 
-                and any other player can challenge it. When a player is challenged, the challenged player must reveal the correct influence 
-                associated with their action. If they reveal the correct influence, the challenger player will lose an influence. However, 
-                if they fail to reveal the correct influence the challenged player will lose their incorrectly revealed influence.</p>
-            <p><b>Block</b>: When the any of the actions "Foreign Aid", "Steal", and "Assasinate" are used, they can be blocked. Once again, 
-                any player can claim to have the correct influence to block. However, blocks can also be challenged by any player. If a block 
-                fails, the original action will take place.
+            <h2>{strings.rules}</h2>
+            <p>2-6 {strings.players}</p>
+            <p>{strings.ruleP1}</p>
+            <p><b>{strings.challengeButtonText}</b>{strings.ruleP2}</p>
+            <p><b>{strings.ruleBlock}</b>{strings.ruleP3}
             </p>
             <p>
-                If a player loses all their influences, they are out of the game. The last player standing wins!
+                {strings.ruleP4}
             </p>
             <p>
-                At this time, if a player disconnects, the game must be recreated.
+                {strings.ruleP5}
             </p>
-            <h2>Influences</h2>
-            <h3>Captain</h3>
-            <p><b id="captain-color">STEAL</b>: Steal 2 coins from a target. Blockable by <hl id="captain-color">Captain</hl> or <hl id="ambassador-color">Ambassador</hl>. Can block <hl id="captain-color">STEAL</hl></p>
-            <h3>Assassin</h3>
-            <p><b id="assassin-color">ASSASSINATE</b>: Pay 3 coins to choose a target to assassinate (target loses an influence). Blockable by <hl id="contessa-color">Contessa</hl>.</p>
-            <h3>Duke</h3>
-            <p><b id="duke-color">TAX</b>: Collect 3 coins from the treasury. Not blockable. Can block Foreign Aid.</p>
-            <h3>Ambassador</h3>
-            <p><b id="ambassador-color">EXCHANGE</b>: Draw 2 influences into your hand and pick any 2 influences to put back. Not blockable. Can block <hl id="captain-color">STEAL</hl></p>
-            <h3>Contessa</h3>
-            <p><b id="contessa-color">BLOCK ASSASSINATION</b>: Can block <b id="assassin-color">assassinations</b>. Not blockable.</p>
-            <h3>Other Actions</h3>
-            <p><b>INCOME</b>: Collect 1 coins from the treasury.</p>
-            <p><b>FOREIGN AID</b>: Collect 2 coins from the treasury. Blockable by <hl id="duke-color">Duke</hl>.</p>
-            <p><b>COUP</b>: Pay 7 coins and choose a target to lose an influence. If a player starts their turn with 10 or more coins, they must Coup. Not Blockable.</p>
+            <h2>{strings.influences}</h2>
+            <h3>{strings.captain}</h3>
+            <p><b id="captain-color">{strings.steal}</b>{strings.ruleSteal}<hl id="captain-color">{strings.captain}</hl> or <hl id="ambassador-color">{strings.ambassador}</hl>{strings.ruleCanblock}<hl id="captain-color">STEAL</hl></p>
+            <h3>{strings.assassin}</h3>
+            <p><b id="assassin-color">{strings.assassinate}</b>{strings.ruleAssassinate}<hl id="contessa-color">{strings.contessa}</hl>.</p>
+            <h3>{strings.duke}</h3>
+            <p><b id="duke-color">{strings.tax}</b>{strings.ruleTax}</p>
+            <h3>{strings.ambassador}</h3>
+            <p><b id="ambassador-color">{strings.exchange}</b>{strings.ruleExchange}<hl id="captain-color">{strings.steal}</hl></p>
+            <h3>{strings.contessa}</h3>
+            <p><b id="contessa-color">{strings.blockAssassination}</b>{strings.ruleCanblock}<b id="assassin-color">{strings.assasinations}</b>{strings.notBlockable}</p>
+            <h3>{strings.otherActions}</h3>
+            <p><b>{strings.income}</b>{strings.ruleIncome}</p>
+            <p><b>{strings.foreingAid}</b>{strings.ruleForeingAid}<hl id="duke-color">{strings.duke}</hl>.</p>
+            <p><b>{strings.coup}</b>{strings.ruleCoup}</p>
         </div>
     </div>
     </ReactModal>

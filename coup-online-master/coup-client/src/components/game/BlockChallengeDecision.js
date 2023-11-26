@@ -1,6 +1,9 @@
 import React from 'react';
-import strings from '../utils/strings'
+import LanguageStrings from '../utils/strings'
+
 const BlockChallengeDecision = (props) => {
+
+    const strings = LanguageStrings();
     const vote = (isChallenging) => {
         props.closeOtherVotes('challenge-block');
 

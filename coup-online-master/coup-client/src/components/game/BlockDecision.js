@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import strings from '../utils/strings'
+import LanguageStrings from '../utils/strings'
 
 const BlockDecision = (props) => {
+
+    const strings = LanguageStrings()
     const [isDecisionMade, setIsDecisionMade] = useState(false);
     const [decision, setDecision] = useState('');
     const [isPickingClaim, setIsPickingClaim] = useState(false);

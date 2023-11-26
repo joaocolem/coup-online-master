@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import  strings from '../utils/strings';
+import  LanguageStrings from '../utils/strings';
 
 const ExchangeInfluences = (props) => {
+
+    const strings = LanguageStrings()
     const [state, setState] = useState({
         influences: props.influences,
         keep: [],

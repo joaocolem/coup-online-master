@@ -2,33 +2,41 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import chicken from '../assets/Chicken.svg';
 import RulesModal from './RulesModal';
+import LanguageStrings from './utils/strings'
+
+
 
 const Home = () => {
+
+    
+
+
+    const strings = LanguageStrings()
     return (
         <>
             <div className="homeContainer">
-                <h1>Welcome to Coup</h1>
-                <p>A game of deduction and deception</p>
+                <h1>{strings.welcomeMessage}</h1>
+                <p>{strings.subtitle}</p>
                 <img src={chicken} alt="chicken-leg" />
                 <div className="input-group-btn">
                     <Link className="home" to="/create">
-                        Create Game
+                        {strings.createGame}
                     </Link>
                 </div>
                 <div className="input-group-btn">
                     <Link className="home" to="/join">
-                        Join Game
+                        {strings.joinGame}
                     </Link>
                 </div>
 
                 <div className="input-group-btn">
                     <Link className="home" to="/cadastro">
-                        Cadastrar
+                        {strings.signIn}
                     </Link>
                 </div>
                 <div className="input-group-btn">
                     <Link className="home" to="/login">
-                        Login
+                        {strings.login}
                     </Link>
                 </div>
                 <div>

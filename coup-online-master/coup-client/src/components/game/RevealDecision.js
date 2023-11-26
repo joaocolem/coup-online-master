@@ -1,6 +1,8 @@
 import React from 'react';
-
+import LanguageStrings from '../utils/strings';
 const RevealDecision = (props) => {
+
+    const strings = LanguageStrings()
     const act = props.res.isBlock ? props.res.counterAction.counterAction : props.res.action.action;
 
     const actionMap = {
@@ -37,7 +39,7 @@ const RevealDecision = (props) => {
     return (
         <div>
             <p>
-                Your <b>{act}</b> has been challenged! If you don't reveal {actionMap[act].join(' or ')} you'll lose influence!
+                {strings.your} <b>{act}</b>{strings.reavelMessage}{actionMap[act].join(strings.or)}{strings.loseInfluence}
             </p>
             {influences}
         </div>

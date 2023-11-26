@@ -1,6 +1,10 @@
 import React from 'react';
-import  strings from '../utils/strings';
+import LanguageStrings from '../utils/strings'
+
+
 const ChooseInfluence = (props) => {
+
+    const strings = LanguageStrings()
     const selectInfluence = (influence) => {
         const res = {
             influence: influence,

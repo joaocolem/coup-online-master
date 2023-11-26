@@ -14,9 +14,11 @@ import CheatSheetModal from '../CheatSheetModal';
 import RulesModal from '../RulesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessKnight, faShip, faSkull, faCrown, faHandshake } from '@fortawesome/free-solid-svg-icons';
-import  strings from '../utils/strings';
+import LanguageStrings from '../utils/strings'
 
 const Coup = (props) => {
+
+    const strings = LanguageStrings();
     let playAgainButtonElem = null;
     const [state, setState] = useState({
         action: null,
