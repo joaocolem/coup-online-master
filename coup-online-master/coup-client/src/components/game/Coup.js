@@ -487,7 +487,7 @@ const Coup = (props) => {
             ></PlayerBoard>
     
             <div className="DecisionsSection">
-                {waiting}
+                {isWaiting && waiting}
                 {revealDecision}
                 {chooseInfluenceDecision}
                 {actionDecision}
