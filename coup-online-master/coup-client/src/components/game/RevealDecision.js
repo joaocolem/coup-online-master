@@ -39,7 +39,7 @@ const RevealDecision = (props) => {
     return (
         <div>
             <p>
-                {strings.your} <b>{act}</b>{strings.reavelMessage}{actionMap[act].join(strings.or)}{strings.loseInfluence}
+                {strings.your} <b>{act}</b>{strings.reavelMessage} {actionMap[act].join(strings.or)} {strings.loseInfluence}
             </p>
             {influences}
         </div>

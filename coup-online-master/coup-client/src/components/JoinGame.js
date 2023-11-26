@@ -70,13 +70,13 @@ const JoinGame = () => {
     const attemptJoinParty = () => {
         if (name === '') {
             console.log('Please enter a name');
-            setErrorMsg('Please enter a name');
+            setErrorMsg(strings.enterNameError);
             setIsError(true);
             return;
         }
         if (roomCode === '') {
             console.log('Please enter a room code');
-            setErrorMsg('Please enter a room code');
+            setErrorMsg(strings.enterRoomCodeError);
             setIsError(true);
             return;
         }
@@ -92,7 +92,7 @@ const JoinGame = () => {
                 } else {
                     console.log('Invalid Party Code');
                     setIsLoading(false);
-                    setErrorMsg('Invalid Party Code');
+                    setErrorMsg(strings.invalideCodeError);
                     setIsError(true);
                 }
             })

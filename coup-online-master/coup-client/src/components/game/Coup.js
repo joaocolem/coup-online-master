@@ -325,7 +325,7 @@ const Coup = (props) => {
 
     if (state.currentPlayer) {
         currentPlayerName = state.currentPlayer;
-        currentPlayer = <p>It is <b>{state.currentPlayer}</b>'s turn</p>;
+        currentPlayer = <p>{strings.itIs} <b>{state.currentPlayer}</b>{strings.turn}</p>;
     }
 
     if (state.revealingRes) {
@@ -354,7 +354,7 @@ const Coup = (props) => {
     }
 
     if (state.action != null || state.blockChallengeRes != null || state.blockingAction !== null) {
-        passButton = <button onClick={() => pass()}>Pass</button>;
+        passButton = <button onClick={() => pass()}>{strings.pass}</button>;
     }
 
     if (state.action != null) {
@@ -414,25 +414,30 @@ const Coup = (props) => {
             <div className="InfluencesContainer">
                 {state.players[state.playerIndex].influences.map((influence, index) => {
                     let icon = null;
+                    let influenceString = null;
 
                     switch (influence) {
                         case 'duke':
                             icon = faChessKnight;
+                            influenceString = (strings.dukeInflu)
                             break;
                         case 'captain':
                             icon = faShip;
+                            influenceString = (strings.captainInflu)
                             break;
                         case 'assassin':
                             icon = faSkull;
+                            influenceString = (strings.assassinInflu)
                             break;
                         case 'contessa':
                             icon = faCrown;
+                            influenceString = (strings.contessaInflu)
                             break;
                         case 'ambassador':
                             icon = faHandshake;
+                            influenceString = (strings.ambassadorInflu)
                             break;
                         default:
-                            // Pode adicionar um ícone padrão ou lidar com outros casos
                             break;
                     }
 
@@ -440,7 +445,7 @@ const Coup = (props) => {
                         <div key={index} className="InfluenceUnitContainer">
                             <FontAwesomeIcon icon={icon} style={{ color: `${influenceColorMap[influence]}` }} />
                             <br />
-                            <h3>{influence}</h3>
+                            <h3>{influenceString}</h3>
                             </div>
                     );
                 })}
@@ -449,17 +454,17 @@ const Coup = (props) => {
 
         coins = (
             <div className="CoinsContainer">
-                <h3>Coins: {state.players[state.playerIndex].money}</h3>
+                <h3>{strings.coins}{state.players[state.playerIndex].money}</h3>
             </div>
         );
     }
 
     if (state.waiting) {
-        waiting = <p>Waiting for other players...</p>;
+        waiting = <p>{strings.waitingPlayers}</p>;
     }
 
     if (state.disconnected) {
-        waiting = <p>You have been disconnected. Please refresh the page to reconnect.</p>;
+        waiting = <p>{strings.disconnected}</p>;
     }
 
     if (state.winner !== '') {
@@ -474,7 +479,7 @@ const Coup = (props) => {
         <div className="GameContainer">
             <div className="GameHeader">
                 <div className="PlayerInfo">
-                    <p>You are: {props.name}</p>
+                    <p>{strings.youAre}{props.name}</p>
                     {coins}
                 </div>
                 <div className="CurrentPlayer">{currentPlayer}</div>

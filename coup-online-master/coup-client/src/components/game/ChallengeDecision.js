@@ -19,16 +19,16 @@ const ChallengeDecision = (props) => {
     };
 
     const challengeText = (action, source, target) => {
-        if (action === 'steal') {
-            return <p><b>{source}</b> {strings.challengeSteal.replace('{target}', `<b>${target}</b>`)}</p>;
-        } else if (action === 'tax') {
-            return <p>{strings.challengeTax}</p>;
-        } else if (action === 'assassinate') {
-            return <p><b>{source}</b> {strings.challengeAssassinate.replace('{target}', `<b>${target}</b>`)}</p>;
-        } else if (action === 'exchange') {
-            return <p>{strings.challengeExchange}</p>;
+        if(action === 'steal') {
+            return <p><b>{source}</b>{strings.challengeSteal}<b>{target}</b></p>
+        }else if(action === 'tax') {
+            return <p><b>{source}</b>{strings.challengeTax}</p>
+        }else if(action === 'assassinate') {
+            return <p><b>{source}</b>{strings.challengeAssassinate}<b>{target}</b></p>
+        }else if(action === 'exchange') {
+            return <p><b>{source}</b>{strings.challengeExchange}</p>
         }
-    };
+    }
 
     return (
         <>

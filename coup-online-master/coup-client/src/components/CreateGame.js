@@ -68,8 +68,8 @@ const CreateGame = () => {
 
     const createParty = () => {
         if (name === '') {
-            console.log('Please enter a name');
-            setErrorMsg('Please enter a name');
+
+            setErrorMsg((strings.enterNameError));
             setIsError(true);
             return;
         }
@@ -88,7 +88,7 @@ const CreateGame = () => {
             .catch(function (err) {
                 console.log('error in creating namespace', err);
                 setIsLoading(false);
-                setErrorMsg('Error creating room, server is unreachable');
+                setErrorMsg(strings.createRoomError);
                 setIsError(true);
             });
     };

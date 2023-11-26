@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LanguageStrings from '../utils/strings'
 
 const ActionDecision = (props) => {
     const [isDecisionMade, setIsDecisionMade] = useState(false);
@@ -6,6 +7,7 @@ const ActionDecision = (props) => {
     const [isPickingTarget, setIsPickingTarget] = useState(false);
     const [targetAction, setTargetAction] = useState('');
     const [actionError, setActionError] = useState('');
+    const strings = LanguageStrings();
 
     const chooseAction = (action, target = null) => {
         const res = {
@@ -28,14 +30,14 @@ const ActionDecision = (props) => {
                 props.deductCoins(3);
                 pickingTarget('assassinate');
             } else {
-                setActionError('Not enough coins to assassinate!');
+                setActionError((strings.notCoinsAssassinate));
             }
         } else if (action === 'coup') {
             if (props.money >= 7) {
                 props.deductCoins(7);
                 pickingTarget('coup');
             } else {
-                setActionError('Not enough coins to coup!');
+                setActionError((strings.notCoinsCoup));
             }
         }
     };
@@ -67,30 +69,30 @@ const ActionDecision = (props) => {
     } else if (props.money < 10) {
         controls = (
             <>
-                <button onClick={() => chooseAction('income')}>Income</button>
-                <button onClick={() => deductCoins('coup')}>Coup</button>
-                <button onClick={() => chooseAction('foreign_aid')}>Foreign Aid</button>
+                <button onClick={() => chooseAction('income')}>{strings.incomeAction}</button>
+                <button onClick={() => deductCoins('coup')}>{strings.coupAction}</button>
+                <button onClick={() => chooseAction('foreign_aid')}>{strings.foreingAidAction}</button>
                 <button id="captain" onClick={() => pickingTarget('steal')}>
-                    Steal
+                    {strings.stealAction}
                 </button>
                 <button id="assassin" onClick={() => deductCoins('assassinate')}>
-                    Assassinate
+                    {strings.assassinate}
                 </button>
                 <button id="duke" onClick={() => chooseAction('tax')}>
-                    Tax
+                    {strings.taxAction}
                 </button>
                 <button id="ambassador" onClick={() => chooseAction('exchange')}>
-                    Exchange
+                    {strings.exchange}
                 </button>
             </>
         );
     } else {
-        controls = <button onClick={() => deductCoins('coup')}>Coup</button>;
+        controls = <button onClick={() => deductCoins('coup')}>{strings.coupAction}</button>;
     }
 
     return (
         <>
-            <p className="DecisionTitle">Choose an action</p>
+            <p className="DecisionTitle">{strings.chooseAction}</p>
             <div className="DecisionButtonsContainer">
                 {controls}
                 <p>{actionError}</p>
