@@ -6,7 +6,7 @@ import { useUser} from './UserContext'
 
 const JoinGame = () => {
     const {user} = useUser();
-    const [name, setName] = useState(useUser ?? '');
+    const [name, setName] = useState(user.nickname ?? '');
     const [roomCode, setRoomCode] = useState('');
     const [players, setPlayers] = useState([]);
     const [isInRoom, setIsInRoom] = useState(false);

@@ -1,93 +1,102 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react';
 
-export default class ActionDecision extends Component {
+const ActionDecision = (props) => {
+    const [isDecisionMade, setIsDecisionMade] = useState(false);
+    const [decision, setDecision] = useState('');
+    const [isPickingTarget, setIsPickingTarget] = useState(false);
+    const [targetAction, setTargetAction] = useState('');
+    const [actionError, setActionError] = useState('');
 
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-            isDecisionMade: false,
-            decision: '',
-            isPickingTarget: false,
-            targetAction: '',
-            actionError: ''
-        }
-    }
-
-    chooseAction = (action, target = null) => {
+    const chooseAction = (action, target = null) => {
         const res = {
             action: {
                 action: action,
                 target: target,
-                source: this.props.name
+                source: props.name
             }
-        }
-        console.log(res)
-        
-        this.props.socket.emit('g-actionDecision', res)
-        this.props.doneAction();
-    }
+        };
+        console.log(res);
 
-    deductCoins = (action) => {
-        console.log(this.props.money, action)
-        if(action === 'assassinate') {
-            if(this.props.money >= 3) {
-                this.props.deductCoins(3);
-                this.pickingTarget('assassinate');
+        props.socket.emit('g-actionDecision', res);
+        props.doneAction();
+    };
+
+    const deductCoins = (action) => {
+        console.log(props.money, action);
+        if (action === 'assassinate') {
+            if (props.money >= 3) {
+                props.deductCoins(3);
+                pickingTarget('assassinate');
             } else {
-                this.setState({ actionError: 'Not enough coins to assassinate!'})
+                setActionError('Not enough coins to assassinate!');
             }
-        } else if(action === 'coup') {
-            if(this.props.money >= 7) {
-                this.props.deductCoins(7);
-                this.pickingTarget('coup');
+        } else if (action === 'coup') {
+            if (props.money >= 7) {
+                props.deductCoins(7);
+                pickingTarget('coup');
             } else {
-                this.setState({ actionError: 'Not enough coins to coup!'})
+                setActionError('Not enough coins to coup!');
             }
         }
+    };
+
+    const pickingTarget = (action) => {
+        setIsPickingTarget(true);
+        setTargetAction(action);
+        setActionError('');
+    };
+
+    const pickTarget = (target) => {
+        chooseAction(targetAction, target);
+    };
+
+    let controls = null;
+    if (isPickingTarget) {
+        controls = props.players
+            .filter((x) => !x.isDead)
+            .filter((x) => x.name !== props.name)
+            .map((x, index) => (
+                <button
+                    style={{ backgroundColor: x.color }}
+                    key={index}
+                    onClick={() => pickTarget(x.name)}
+                >
+                    {x.name}
+                </button>
+            ));
+    } else if (props.money < 10) {
+        controls = (
+            <>
+                <button onClick={() => chooseAction('income')}>Income</button>
+                <button onClick={() => deductCoins('coup')}>Coup</button>
+                <button onClick={() => chooseAction('foreign_aid')}>Foreign Aid</button>
+                <button id="captain" onClick={() => pickingTarget('steal')}>
+                    Steal
+                </button>
+                <button id="assassin" onClick={() => deductCoins('assassinate')}>
+                    Assassinate
+                </button>
+                <button id="duke" onClick={() => chooseAction('tax')}>
+                    Tax
+                </button>
+                <button id="ambassador" onClick={() => chooseAction('exchange')}>
+                    Exchange
+                </button>
+            </>
+        );
+    } else {
+        controls = <button onClick={() => deductCoins('coup')}>Coup</button>;
     }
 
-    pickingTarget = (action) => {
-        this.setState({
-            isPickingTarget: true,
-            targetAction: action,
-            actionError: ''
-        });
-        this.setState({targetAction: action});
-    }
-
-    pickTarget = (target) => {
-        this.chooseAction(this.state.targetAction, target);
-    }
-
-    render() {
-        let controls = null
-        if(this.state.isPickingTarget) {
-            controls = this.props.players.filter(x => !x.isDead).filter(x => x.name !== this.props.name).map((x, index) => {
-                return <button style={{ backgroundColor: x.color}} key={index} onClick={() => this.pickTarget(x.name)}>{x.name}</button>
-            })
-        } else if(this.props.money < 10) {
-           controls = ( 
-           <>   
-                <button onClick={() => this.chooseAction('income')}>Income</button>
-                <button onClick={() => this.deductCoins('coup')}>Coup</button>
-                <button onClick={() => this.chooseAction('foreign_aid')}>Foreign Aid</button>
-                <button id="captain" onClick={() => this.pickingTarget('steal')}>Steal</button>
-                <button id="assassin" onClick={() => this.deductCoins('assassinate')}>Assassinate</button>
-                <button id="duke" onClick={() => this.chooseAction('tax')}>Tax</button>
-                <button id="ambassador" onClick={() => this.chooseAction('exchange')}>Exchange</button>
-           </> 
-           )
-        } else { //money over 10, has to coup
-            controls = <button onClick={() => this.deductCoins('coup')}>Coup</button>
-        }
-        return (<>
+    return (
+        <>
             <p className="DecisionTitle">Choose an action</p>
             <div className="DecisionButtonsContainer">
-               {controls}
-               <p>{this.state.actionError}</p>
+                {controls}
+                <p>{actionError}</p>
             </div>
-            </>
-        )
-    }
-}
+        </>
+    );
+};
+
+export default ActionDecision;
