@@ -1,29 +1,28 @@
-import React, { Component } from 'react'
+import React from 'react';
 
-export default class BlockChallengeDecision extends Component {
-
-    vote = (isChallenging) => {
-        this.props.closeOtherVotes('challenge-block')
+const BlockChallengeDecision = (props) => {
+    const vote = (isChallenging) => {
+        props.closeOtherVotes('challenge-block');
 
         const res = {
-            counterAction: this.props.counterAction,
-            prevAction: this.props.prevAction,
+            counterAction: props.counterAction,
+            prevAction: props.prevAction,
             isChallenging,
-            challengee: this.props.counterAction.source,
-            challenger: this.props.name
-        }
-        console.log(res)
-        this.props.socket.emit('g-blockChallengeDecision', res);
-        this.props.doneBlockChallengeVote();
-    }
+            challengee: props.counterAction.source,
+            challenger: props.name
+        };
+        console.log(res);
+        props.socket.emit('g-blockChallengeDecision', res);
+        props.doneBlockChallengeVote();
+    };
 
-    render() {
-        return (
-            <>
-                <p>{this.props.counterAction.source} is trying to block {this.props.prevAction.action} from {this.props.prevAction.source} as {this.props.counterAction.claim}</p>
-                <button onClick={() => this.vote(true)}>Challenge</button>
-                {/* <button onClick={() => this.vote(false)}>Pass</button> */}
-            </>
-        )
-    }
-}
+    return (
+        <>
+            <p>{props.counterAction.source} is trying to block {props.prevAction.action} from {props.prevAction.source} as {props.counterAction.claim}</p>
+            <button onClick={() => vote(true)}>Challenge</button>
+            {/* <button onClick={() => vote(false)}>Pass</button> */}
+        </>
+    );
+};
+
+export default BlockChallengeDecision;

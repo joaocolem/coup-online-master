@@ -1,106 +1,105 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react';
 
-export default class BlockDecision extends Component {
+const BlockDecision = (props) => {
+    const [isDecisionMade, setIsDecisionMade] = useState(false);
+    const [decision, setDecision] = useState('');
+    const [isPickingClaim, setIsPickingClaim] = useState(false);
+    const [targetAction, setTargetAction] = useState('');
 
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-            isDecisionMade: false,
-            decision: '',
-            isPickingClaim: false,
-            targetAction: ''
-        }
-    }
-
-    chooseAction = (action, target = null) => {
+    const chooseAction = (action, target = null) => {
         const res = {
             action: {
                 action: action,
                 target: target,
-                source: this.props.name
+                source: props.name
             }
-        }
-        console.log(res)
-        
-        this.props.socket.emit('g-actionDecision', res)
-        this.props.doneAction();
-    }
+        };
+        console.log(res);
 
-    block = (block, claim = null) => {
-        this.props.closeOtherVotes('block')
-        // res.prevAction.action, res.prevAction.target, res.prevAction.source, res.counterAction, res.blockee, res.blocker, res.isBlocking
-        let resClaim
-        if(claim != null) {
+        props.socket.emit('g-actionDecision', res);
+        props.doneAction();
+    };
+
+    const block = (block, claim = null) => {
+        props.closeOtherVotes('block');
+        let resClaim;
+        if (claim != null) {
             resClaim = claim;
-        } else if(block === 'block_foreign_aid') {
-            resClaim = 'duke'
-        } else if(block === 'block_assassinate') {
-            resClaim = 'contessa'
+        } else if (block === 'block_foreign_aid') {
+            resClaim = 'duke';
+        } else if (block === 'block_assassinate') {
+            resClaim = 'contessa';
         } else {
-            console.error('unknown claim, line 40')
+            console.error('unknown claim, line 40');
         }
 
         const res = {
-            prevAction: this.props.action,
+            prevAction: props.action,
             counterAction: {
                 counterAction: block,
                 claim: resClaim,
-                source: this.props.name
+                source: props.name
             },
-            blockee: this.props.action.source,
-            blocker: this.props.name,
+            blockee: props.action.source,
+            blocker: props.name,
             isBlocking: true
-        }
-        console.log(res)
-        this.props.socket.emit('g-blockDecision', res)
-        this.props.doneBlockVote();
-    }
+        };
+        console.log(res);
+        props.socket.emit('g-blockDecision', res);
+        props.doneBlockVote();
+    };
 
-    pass = () => {
+    const pass = () => {
         const res = {
-            action: this.props.action,
+            action: props.action,
             isBlocking: false
-        }
-        console.log(res)
-        this.props.socket.emit('g-blockDecision', res)
-        this.props.doneBlockVote();
-    }
+        };
+        console.log(res);
+        props.socket.emit('g-blockDecision', res);
+        props.doneBlockVote();
+    };
 
-    pickClaim = (block) => {
-        this.props.closeOtherVotes('block')
-        this.setState({ decision: block })
-        this.setState({ isPickingClaim: true })
-    }
+    const pickClaim = (block) => {
+        props.closeOtherVotes('block');
+        setDecision(block);
+        setIsPickingClaim(true);
+    };
 
-    render() {
-        let control = null
-        let pickClaim = null
-        if(!this.state.isPickingClaim) {
-            if(this.props.action.action === 'foreign_aid') {
-                control = <>
-                <p><b>{this.props.action.source}</b> is trying to use Foreign Aid</p>
-                <button onClick={() => this.block('block_foreign_aid')}>Block Foreign Aid</button>
+    let control = null;
+    let pickClaimElem = null;
+
+    if (!isPickingClaim) {
+        if (props.action.action === 'foreign_aid') {
+            control = (
+                <>
+                    <p>
+                        <b>{props.action.source}</b> is trying to use Foreign Aid
+                    </p>
+                    <button onClick={() => block('block_foreign_aid')}>Block Foreign Aid</button>
                 </>
-            } else if(this.props.action.action === 'steal') {
-                control = <button onClick={() => this.pickClaim('block_steal')}>Block Steal</button>
-            } else if(this.props.action.action === 'assassinate') {
-                control = <button onClick={() => this.block('block_assassinate')}>Block Assassination</button>
-            }
-        } else {
-            pickClaim = <>
-                <p>To block steal, do you claim Ambassador or Captain?</p>
-                <button onClick={() => this.block(this.state.decision, 'ambassador')}>Ambassador</button>
-                <button onClick={() => this.block(this.state.decision, 'captain')}>Captain</button>
-            </>
+            );
+        } else if (props.action.action === 'steal') {
+            control = <button onClick={() => pickClaim('block_steal')}>Block Steal</button>;
+        } else if (props.action.action === 'assassinate') {
+            control = <button onClick={() => block('block_assassinate')}>Block Assassination</button>;
         }
-        
-        return (
+    } else {
+        pickClaimElem = (
             <>
-               {control}
-               {pickClaim}
-               {/* <button onClick={() => this.pass()}>Pass</button> */}
+                <p>To block steal, do you claim Ambassador or Captain?</p>
+                <button onClick={() => block(decision, 'ambassador')}>Ambassador</button>
+                <button onClick={() => block(decision, 'captain')}>Captain</button>
             </>
-        )
+        );
     }
-}
+
+    return (
+        <>
+            {control}
+            {pickClaimElem}
+            {/* <button onClick={() => pass()}>Pass</button> */}
+        </>
+    );
+};
+
+export default BlockDecision;

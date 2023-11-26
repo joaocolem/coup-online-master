@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessKnight, faShip, faSkull, faCrown, faHandshake } from '@fortawesome/free-solid-svg-icons';
 
 const Coup = (props) => {
+    let playAgainButtonElem = null;
     const [state, setState] = useState({
         action: null,
         blockChallengeRes: null,
@@ -36,6 +37,8 @@ const Coup = (props) => {
         disconnected: false,
     });
 
+    const [isRenderPlay, setIsRenderPlay] = useState(false);
+
     const playAgainButton = (
         <>
             <br></br>
@@ -45,13 +48,15 @@ const Coup = (props) => {
         </>
     );
 
+
     useEffect(() => {
         const handleDisconnect = (reason) => {
             setState((prev) => ({ ...prev, disconnected: true }));
         };
 
         const handleGameOver = (winner) => {
-            setState((prev) => ({ ...prev, winner: `${winner} Wins!`, playAgain: playAgainButton }));
+            setState((prev) => ({ ...prev, winner: `${winner} Wins!`, playAgain: playAgainButton }))
+            setIsRenderPlay(true);
         };
 
         const handleUpdatePlayers = (players) => {
@@ -59,7 +64,7 @@ const Coup = (props) => {
                 let isDead = true;
                 let playerIndex = null;
                 players = players.filter((x) => !x.isDead);
-
+        
                 for (let i = 0; i < players.length; i++) {
                     if (players[i].name === props.name) {
                         playerIndex = i;
@@ -67,10 +72,10 @@ const Coup = (props) => {
                         break;
                     }
                 }
-
                 return { ...prev, playerIndex, players, isDead };
             });
         };
+        
 
         const handleUpdateCurrentPlayer = (currentPlayer) => {
             setState((prev) => ({ ...prev, currentPlayer }));
@@ -155,6 +160,11 @@ const Coup = (props) => {
             setState((prev) => ({ ...prev, blockChallengeRes: null }));
         };
 
+        const handlePlayAgain = () => {
+            setIsRenderPlay(false);
+            setState((prev) => ({ ...prev, winner: ''}));
+        }
+
         props.socket.on('disconnect', handleDisconnect);
         props.socket.on('g-gameOver', handleGameOver);
         props.socket.on('g-updatePlayers', handleUpdatePlayers);
@@ -170,6 +180,7 @@ const Coup = (props) => {
         props.socket.on('g-closeChallenge', handleCloseChallenge);
         props.socket.on('g-closeBlock', handleCloseBlock);
         props.socket.on('g-closeBlockChallenge', handleCloseBlockChallenge);
+        props.socket.on('g-gameRestart', handlePlayAgain);
 
         return () => {
             // Cleanup listeners
@@ -188,6 +199,7 @@ const Coup = (props) => {
             props.socket.off('g-closeChallenge', handleCloseChallenge);
             props.socket.off('g-closeBlock', handleCloseBlock);
             props.socket.off('g-closeBlockChallenge', handleCloseBlockChallenge);
+            props.socket.off('g-gameRestart', handlePlayAgain);
         };
     }, [props.socket, props.name, state]);
 
@@ -268,6 +280,8 @@ const Coup = (props) => {
         doneChallengeBlockingVote();
     };
 
+
+
     const influenceColorMap = {
         duke: '#D55DC7',
         captain: '#80C6E5',
@@ -288,7 +302,7 @@ const Coup = (props) => {
     let passButton = null;
     let coins = null;
     let exchangeInfluences = null;
-    let playAgainButtonElem = null;
+
     let isWaiting = true;
     let waiting = null;
 
@@ -482,15 +496,15 @@ const Coup = (props) => {
                 {blockChallengeDecision}
                 {blockDecision}
                 {passButton}
-                {playAgainButtonElem}
+                {isRenderPlay && playAgainButtonElem}
             </div>
     
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                 <div className="InfluenceSection">{influences}</div>
             </div>
     
-            {state.playAgain}
-            <b>{state.winner}</b>
+            {isRenderPlay && state.playAgain}
+            <b>{isRenderPlay && state.winner}</b>
         </div>
     );
     

@@ -42,11 +42,13 @@ class CoupGame{
             const socket = this.gameSocket.sockets[x.socketID];
             let bind = this
             socket.on('g-playAgain', () => {
+            
                 if(bind.isPlayAgainOpen){
                     bind.isPlayAgainOpen = false;
                     this.resetGame(Math.floor(Math.random() * (this.players.length)));
                     this.updatePlayers();
-                    this.playTurn() 
+                    this.playTurn();
+                    this.restartGame();
                 }
             })
             socket.on('g-deductCoins', (res) => {
@@ -238,7 +240,11 @@ class CoupGame{
     }
 
     updatePlayers() {// when players die
-        this.gameSocket.emit('g-updatePlayers', gameUtils.exportPlayers(JSON.parse(JSON.stringify(this.players))));
+        this.gameSocket.emit('g-updatePlayers', gameUtils.exportPlayers(JSON.parse(JSON.stringify(this.players))))
+    }
+    
+    restartGame(){
+        this.gameSocket.emit('g-gameRestart', true)
     }
 
     reveal(action, counterAction, challengee, challenger, isBlock) {
