@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import strings from '../utils/strings'
 
 const BlockDecision = (props) => {
     const [isDecisionMade, setIsDecisionMade] = useState(false);
@@ -6,19 +7,7 @@ const BlockDecision = (props) => {
     const [isPickingClaim, setIsPickingClaim] = useState(false);
     const [targetAction, setTargetAction] = useState('');
 
-    const chooseAction = (action, target = null) => {
-        const res = {
-            action: {
-                action: action,
-                target: target,
-                source: props.name
-            }
-        };
-        console.log(res);
 
-        props.socket.emit('g-actionDecision', res);
-        props.doneAction();
-    };
 
     const block = (block, claim = null) => {
         props.closeOtherVotes('block');
@@ -73,22 +62,22 @@ const BlockDecision = (props) => {
             control = (
                 <>
                     <p>
-                        <b>{props.action.source}</b> is trying to use Foreign Aid
+                        <b>{props.action.source}</b> {strings.usingForeingAid}
                     </p>
-                    <button onClick={() => block('block_foreign_aid')}>Block Foreign Aid</button>
+                    <button onClick={() => block('block_foreign_aid')}>{strings.blockForeingAid}</button>
                 </>
             );
         } else if (props.action.action === 'steal') {
-            control = <button onClick={() => pickClaim('block_steal')}>Block Steal</button>;
+            control = <button onClick={() => pickClaim('block_steal')}>{strings.blockSteal}</button>;
         } else if (props.action.action === 'assassinate') {
-            control = <button onClick={() => block('block_assassinate')}>Block Assassination</button>;
+            control = <button onClick={() => block('block_assassinate')}>{strings.blockAssassination}</button>;
         }
     } else {
         pickClaimElem = (
             <>
-                <p>To block steal, do you claim Ambassador or Captain?</p>
-                <button onClick={() => block(decision, 'ambassador')}>Ambassador</button>
-                <button onClick={() => block(decision, 'captain')}>Captain</button>
+                <p>{strings.pickClaimMessage}</p>
+                <button onClick={() => block(decision, 'ambassador')}>{strings.ambassador}</button>
+                <button onClick={() => block(decision, 'captain')}>{strings.captain}</button>
             </>
         );
     }

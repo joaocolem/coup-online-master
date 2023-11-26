@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import  strings from '../utils/strings';
 
 const EventLog = (props) => {
     const messagesEndRef = useRef(null);
@@ -13,7 +14,7 @@ const EventLog = (props) => {
 
     return (
         <div className="EventLogContainer">
-            <p className="bold EventLogTitle">Event Log</p>
+            <p className="bold EventLogTitle">{strings.eventLog}</p>
             <div className="EventLogBody">
                 {props.logs.map((x, index) => (
                     <p key={index} className={index === props.logs.length - 1 ? 'new' : ''}>

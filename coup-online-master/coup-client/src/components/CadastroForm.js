@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './CadastroFormStyle.css';
+import  strings from './utils/strings';
+
 
 const CadastroForm = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +34,7 @@ const CadastroForm = () => {
 
   return (
     <div className="login-container">
-      <h2>Cadastro</h2>
+      <h2>{strings.signIn}</h2>
       <form>
         <div className="form-group">
           <label>Email:</label>
@@ -43,7 +45,7 @@ const CadastroForm = () => {
           />
         </div>
         <div className="form-group">
-          <label>Nickname (9 caracteres):</label>
+          <label>Nickname:</label>
           <input
             type="text"
             value={nickname}
@@ -51,7 +53,7 @@ const CadastroForm = () => {
           />
         </div>
         <div className="form-group">
-          <label>Senha:</label>
+          <label>{strings.password}:</label>
           <input
             type="password"
             value={senha}
@@ -65,7 +67,7 @@ const CadastroForm = () => {
             className="custom-button"
             onClick={handleCadastro}
           >
-            Cadastrar
+            {strings.registration}
           </button>
         </div>
       </form>

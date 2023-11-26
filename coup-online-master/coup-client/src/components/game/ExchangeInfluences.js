@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import  strings from '../utils/strings';
 
 const ExchangeInfluences = (props) => {
     const [state, setState] = useState({
@@ -38,7 +39,7 @@ const ExchangeInfluences = (props) => {
 
     return (
         <div>
-            <p className="DecisionTitle">Choose which influence(s) to keep</p>
+            <p className="DecisionTitle">{strings.chooseInfluencesToKeep}</p>
             {influences}
         </div>
     );

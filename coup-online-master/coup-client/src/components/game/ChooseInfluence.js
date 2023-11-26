@@ -1,5 +1,5 @@
 import React from 'react';
-
+import  strings from '../utils/strings';
 const ChooseInfluence = (props) => {
     const selectInfluence = (influence) => {
         const res = {
@@ -19,7 +19,7 @@ const ChooseInfluence = (props) => {
 
     return (
         <div>
-            <p className="DecisionTitle">Choose an influence to lose </p>
+            <p className="DecisionTitle">{strings.chooseInfluenceToLose} </p>
             {influences}
         </div>
     );

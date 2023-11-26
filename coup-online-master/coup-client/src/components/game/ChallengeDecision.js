@@ -1,4 +1,5 @@
 import React from 'react';
+import  strings from '../utils/strings';
 
 const ChallengeDecision = (props) => {
     const vote = (isChallenging) => {
@@ -8,7 +9,7 @@ const ChallengeDecision = (props) => {
             action: props.action,
             isChallenging,
             challengee: props.action.source,
-            challenger: props.name
+            challenger: props.name,
         };
         console.log(res);
         props.socket.emit('g-challengeDecision', res);
@@ -17,20 +18,20 @@ const ChallengeDecision = (props) => {
 
     const challengeText = (action, source, target) => {
         if (action === 'steal') {
-            return <p><b>{source}</b> is trying to Steal from <b>{target}</b></p>;
+            return <p><b>{source}</b> {strings.challengeSteal.replace('{target}', `<b>${target}</b>`)}</p>;
         } else if (action === 'tax') {
-            return <p><b>{source}</b> is trying to collect Tax (3 coins)</p>;
+            return <p>{strings.challengeTax}</p>;
         } else if (action === 'assassinate') {
-            return <p><b>{source}</b> is trying to Assassinate <b>{target}</b></p>;
+            return <p><b>{source}</b> {strings.challengeAssassinate.replace('{target}', `<b>${target}</b>`)}</p>;
         } else if (action === 'exchange') {
-            return <p><b>{source}</b> is trying to Exchange their influences</p>;
+            return <p>{strings.challengeExchange}</p>;
         }
     };
 
     return (
         <>
             {challengeText(props.action.action, props.action.source, props.action.target)}
-            <button onClick={() => vote(true)}>Challenge</button>
+            <button onClick={() => vote(true)}>{strings.challengeButtonText}</button>
             {/* <button onClick={() => vote(false)}>Pass</button> */}
         </>
     );

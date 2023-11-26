@@ -4,6 +4,7 @@ import { ReactSortable } from 'react-sortablejs';
 import Coup from './game/Coup';
 import axios from 'axios';
 import { useUser} from './UserContext'
+import  strings from './utils/strings';
 
 const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
@@ -152,17 +153,17 @@ const CreateGame = () => {
     }
 
     if (roomCode !== '' && !isLoading) {
-        youCanSortElem = <p>You can drag to re-arrange the players in a specific turn order!</p>;
+        youCanSortElem = <p>{strings.dragPlayersMessage}</p>;
         roomCodeElem = (
             <div>
                 <p>
-                    ROOM CODE: <br />
+                    {strings.roomCode} <br />
                     <br />
                     <b className="RoomCode" onClick={copyCode}>
                         {roomCode} <span className="iconify" data-icon="typcn-clipboard" data-inline="true"></span>
                     </b>
                 </p>
-                {copied ? <p>Copied to clipboard</p> : null}
+                {copied ? <p>{strings.copiedToClip}</p> : null}
             </div>
         );
     }
@@ -173,7 +174,7 @@ const CreateGame = () => {
 
     return (
         <div className="createGameContainer">
-            <p>Please enter your name</p>
+            <p>{strings.pleseEnterName}</p>
             <input
                 type="text"
                 value={name}
@@ -184,7 +185,7 @@ const CreateGame = () => {
                         setIsError(false);
                         onNameChange(e.target.value);
                     } else {
-                        setErrorMsg('Name must be less than 11 characters');
+                        setErrorMsg(strings.lessNameError);
                         setIsError(true);
                     }
                 }}
@@ -201,10 +202,10 @@ const CreateGame = () => {
                         let ready = null;
                         let readyUnitColor = '#E46258';
                         if (item.isReady) {
-                            ready = <b>Ready!</b>;
+                            ready = <b>{strings.ready}!</b>;
                             readyUnitColor = '#73C373';
                         } else {
-                            ready = <b>Not Ready</b>;
+                            ready = <b>{strings.notReady}</b>;
                         }
                         return (
                             <div className="readyUnit" style={{ backgroundColor: readyUnitColor }} key={index}>

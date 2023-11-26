@@ -14,6 +14,7 @@ import CheatSheetModal from '../CheatSheetModal';
 import RulesModal from '../RulesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessKnight, faShip, faSkull, faCrown, faHandshake } from '@fortawesome/free-solid-svg-icons';
+import  strings from '../utils/strings';
 
 const Coup = (props) => {
     let playAgainButtonElem = null;
@@ -43,7 +44,7 @@ const Coup = (props) => {
         <>
             <br></br>
             <button className="startGameButton" onClick={() => props.socket.emit('g-playAgain')}>
-                Play Again
+                {strings.playAgain}
             </button>
         </>
     );
