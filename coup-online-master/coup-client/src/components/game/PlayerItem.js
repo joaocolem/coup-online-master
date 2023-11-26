@@ -8,6 +8,7 @@ export default function PlayerItem({ player, position, isCurrentPlayer }) {
     const { top, left } = position;
     const [isBlinking, setBlinking] = useState(false);
 
+
     useEffect(() => {
        
         const blinkInterval = setInterval(() => {
