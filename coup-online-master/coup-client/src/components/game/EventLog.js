@@ -1,35 +1,29 @@
-import React, { Component } from 'react'
+import React, { useEffect, useRef } from 'react';
 
-export default class EventLog extends Component {
-    
-    render() {
-        return (
-            <div className="EventLogContainer">
-                <p className="bold EventLogTitle">Event Log</p>
-                <div className="EventLogBody">
-                   {this.props.logs.map((x, index) => {
-                        if(index === this.props.logs.length-1){
-                            return <p className="new">{x}</p>
-                        }
-                    return <p>{x}</p>
-                    })}
-                    <div style={{ float:"left", clear: "both" }}
-                        ref={(el) => { this.messagesEnd = el; }}>
-                    </div> 
-                </div>
+const EventLog = (props) => {
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [props.logs]);
+
+    return (
+        <div className="EventLogContainer">
+            <p className="bold EventLogTitle">Event Log</p>
+            <div className="EventLogBody">
+                {props.logs.map((x, index) => (
+                    <p key={index} className={index === props.logs.length - 1 ? 'new' : ''}>
+                        {x}
+                    </p>
+                ))}
+                <div style={{ float: 'left', clear: 'both' }} ref={messagesEndRef}></div>
             </div>
-        )
-    }
+        </div>
+    );
+};
 
-    scrollToBottom = () => {
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-      }
-      
-      componentDidMount() {
-        this.scrollToBottom();
-      }
-      
-      componentDidUpdate() {
-        this.scrollToBottom();
-      }
-}
+export default EventLog;

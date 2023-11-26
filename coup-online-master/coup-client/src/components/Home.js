@@ -1,44 +1,46 @@
-import React, { Component } from 'react'
-import { Link } from "react-router-dom";
-import chicken from "../assets/Chicken.svg"
+import React from 'react';
+import { Link } from 'react-router-dom';
+import chicken from '../assets/Chicken.svg';
 import RulesModal from './RulesModal';
-import CreateGame from './CreateGame';
 
-
-
-export default class Home extends Component {
-    render() {
-        return (
-            <>
+const Home = () => {
+    return (
+        <>
             <div className="homeContainer">
                 <h1>Welcome to Coup</h1>
                 <p>A game of deduction and deception</p>
-                <img src={chicken} alt="chicken-leg"/>
+                <img src={chicken} alt="chicken-leg" />
                 <div className="input-group-btn">
-                    <Link className="home" to="/create" >Create Game</Link>
+                    <Link className="home" to="/create">
+                        Create Game
+                    </Link>
                 </div>
                 <div className="input-group-btn">
-                    <Link className="home" to="/join" >Join Game</Link>
+                    <Link className="home" to="/join">
+                        Join Game
+                    </Link>
                 </div>
 
                 <div className="input-group-btn">
-                    <Link className="home" to="/cadastro" >Cadastrar</Link>
+                    <Link className="home" to="/cadastro">
+                        Cadastrar
+                    </Link>
                 </div>
                 <div className="input-group-btn">
-                    <Link className="home" to="/login" >Login</Link>
+                    <Link className="home" to="/login">
+                        Login
+                    </Link>
                 </div>
                 <div>
                     <div className="homeModalContainer">
-                    <RulesModal home={true}/> 
+                        <RulesModal home={true} />
                     </div>
                 </div>
-                
-
-                
             </div>
             {/* <p className="footer">Made by <a className="website-link" href="https://github.com/cheneth" target="_blank" rel="noopener noreferrer">Ethan Chen</a></p>
             <p className="version-number">Beta v0.9</p> */}
-            </>
-        )
-    }
-}
+        </>
+    );
+};
+
+export default Home;

@@ -1,46 +1,47 @@
-import React, { Component } from 'react'
+import React from 'react';
 
-export default class RevealDecision extends Component {
+const RevealDecision = (props) => {
+    const act = props.res.isBlock ? props.res.counterAction.counterAction : props.res.action.action;
 
-    constructor(props) {
-        super(props)
+    const actionMap = {
+        tax: ['duke'],
+        assassinate: ['assassin'],
+        exchange: ['ambassador'],
+        steal: ['captain'],
+        block_foreign_aid: ['duke'],
+        block_steal: ['ambassador', 'captain'],
+        block_assassinate: ['contessa'],
+    };
 
-        this.act = this.props.res.isBlock ? this.props.res.counterAction.counterAction : this.props.res.action.action
-        this.actionMap = {
-            tax: ["duke"],
-            assassinate: ["assassin"],
-            exchange: ["ambassador"],
-            steal: ["captain"],
-            block_foreign_aid: ["duke"],
-            block_steal: ["ambassador", "captain"],
-            block_assassinate: ["contessa"],
-        }
-    }
-    
-    selectInfluence = (influence) => {
-        // res.revealedCard, prevaction, counterAction, challengee, challenger, isBlock
+    const selectInfluence = (influence) => {
         const res = {
             revealedCard: influence,
-            prevAction: this.props.res.action,
-            counterAction: this.props.res.counterAction,
-            challengee: this.props.res.challengee,
-            challenger: this.props.res.challenger,
-            isBlock: this.props.res.isBlock
-        }
-        console.log(res)
-        this.props.socket.emit('g-revealDecision', res);
-        this.props.doneReveal();
-    }
+            prevAction: props.res.action,
+            counterAction: props.res.counterAction,
+            challengee: props.res.challengee,
+            challenger: props.res.challenger,
+            isBlock: props.res.isBlock,
+        };
 
-    render() {
-        const influences = this.props.influences.map((x, index) => {
-            return <button id={x} key={index} onClick={() => this.selectInfluence(x)}>{x}</button>
-        })
-        return ( 
-            <div>
-                <p>Your <b>{this.act}</b> has been challenged! If you don't reveal {this.actionMap[this.act].join(' or ')} you'll lose influence! </p>
-                {influences}
-            </div>
-        )
-    }
-}
+        console.log(res);
+        props.socket.emit('g-revealDecision', res);
+        props.doneReveal();
+    };
+
+    const influences = props.influences.map((x, index) => (
+        <button key={index} onClick={() => selectInfluence(x)}>
+            {x}
+        </button>
+    ));
+
+    return (
+        <div>
+            <p>
+                Your <b>{act}</b> has been challenged! If you don't reveal {actionMap[act].join(' or ')} you'll lose influence!
+            </p>
+            {influences}
+        </div>
+    );
+};
+
+export default RevealDecision;
