@@ -2,11 +2,9 @@ import React, { Component } from 'react'
 import { Link } from "react-router-dom";
 import chicken from "../assets/Chicken.svg"
 import RulesModal from './RulesModal';
-import CreateGame from './CreateGame';
 
 
-
-export default class Home extends Component {
+export default class PlayGame extends Component {
     render() {
         return (
             <>
@@ -22,10 +20,7 @@ export default class Home extends Component {
                 </div>
 
                 <div className="input-group-btn">
-                    <Link className="home" to="/cadastro" >Cadastrar</Link>
-                </div>
-                <div className="input-group-btn">
-                    <Link className="home" to="/login" >Login</Link>
+                    <Link className="home" to="/perfil" >Perfil</Link>
                 </div>
                 <div>
                     <div className="homeModalContainer">

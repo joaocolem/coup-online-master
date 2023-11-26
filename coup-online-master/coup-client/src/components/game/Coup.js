@@ -39,13 +39,12 @@ export default class Coup extends Component {
              waiting: true,
              disconnected: false
         }
-        const bind = this;
 
         this.playAgainButton = <>
-        <br></br>
-        <button className="startGameButton" onClick={() => {
-            this.props.socket.emit('g-playAgain');
-        }}>Play Again</button>
+            <br></br>
+            <button className="startGameButton" onClick={() => {
+                this.props.socket.emit('g-playAgain');
+            }}>Play Again</button>
         </>
 
         this.props.socket.on('disconnect', reason => {
@@ -53,12 +52,12 @@ export default class Coup extends Component {
         })
 
         this.props.socket.on('g-gameOver', (winner) => {
-            bind.setState({winner: `${winner} Wins!`})
-            bind.setState({playAgain: bind.playAgainButton})
+            this.setState({winner: `${winner} Wins!`})
+            this.setState({playAgain: this.playAgainButton})
         })
         this.props.socket.on('g-updatePlayers', (players) => {
-            bind.setState({playAgain: null})
-            bind.setState({winner: null})
+            this.setState({playAgain: null})
+            this.setState({winner: null})
             players = players.filter(x => !x.isDead);
             let playerIndex = null;
             for(let i = 0; i < players.length; i++) {
@@ -74,19 +73,19 @@ export default class Coup extends Component {
                 this.setState({ isDead: false})
             }
             console.log(playerIndex)
-            bind.setState({playerIndex, players});
+            this.setState({playerIndex, players});
             
         });
         this.props.socket.on('g-updateCurrentPlayer', (currentPlayer) => {
             console.log('currentPlayer: ', currentPlayer)
-            bind.setState({ currentPlayer });
+            this.setState({ currentPlayer });
         });
         this.props.socket.on('g-addLog', (log) => {
             let splitLog=  log.split(' ');
             let coloredLog = [];
             coloredLog = splitLog.map((item, index) => {
                 let found = null
-                bind.state.players.forEach(player => {
+                this.state.players.forEach(player => {
                     if(item === player.name){
                         found = <b style={{color: player.color}}>{player.name} </b>;
                     }
@@ -96,61 +95,61 @@ export default class Coup extends Component {
                 }
                 return <>{item+' '}</>
             })
-            bind.state.logs = [...bind.state.logs, coloredLog]
-            bind.setState({logs :bind.state.logs})
+            this.state.logs = [...this.state.logs, coloredLog]
+            this.setState({logs :this.state.logs})
         })
         this.props.socket.on('g-chooseAction', () => {        
-            bind.setState({ isChooseAction: true})
+            this.setState({ isChooseAction: true})
         });
         this.props.socket.on('g-openExchange', (drawTwo) => {
-            let influences = [...bind.state.players[bind.state.playerIndex].influences, ...drawTwo];
-            bind.setState({ exchangeInfluence: influences });
+            let influences = [...this.state.players[this.state.playerIndex].influences, ...drawTwo];
+            this.setState({ exchangeInfluence: influences });
         })
         this.props.socket.on('g-openChallenge', (action) => {
             if(this.state.isDead) {
                 return
             }
-            if(action.source !== bind.props.name) {
-               bind.setState({ action }) 
+            if(action.source !== this.props.name) {
+               this.setState({ action }) 
             } else {
-                bind.setState({ action: null }) 
+                this.setState({ action: null }) 
             }
         });
         this.props.socket.on('g-openBlockChallenge', (blockChallengeRes) => {
             if(this.state.isDead) {
                 return
             }
-            if(blockChallengeRes.counterAction.source !== bind.props.name) {
-               bind.setState({ blockChallengeRes }) 
+            if(blockChallengeRes.counterAction.source !== this.props.name) {
+               this.setState({ blockChallengeRes }) 
             } else {
-                bind.setState({ blockChallengeRes: null }) 
+                this.setState({ blockChallengeRes: null }) 
             }
         });
         this.props.socket.on('g-openBlock', (action) => {
             if(this.state.isDead) {
                 return
             }
-            if(action.source !== bind.props.name) {
-                bind.setState({ blockingAction: action })
+            if(action.source !== this.props.name) {
+                this.setState({ blockingAction: action })
              } else {
-                 bind.setState({ blockingAction: null }) 
+                 this.setState({ blockingAction: null }) 
              }
         });
         this.props.socket.on('g-chooseReveal', (res) => {
             console.log(res)
-            bind.setState({ revealingRes: res});
+            this.setState({ revealingRes: res});
         });
         this.props.socket.on('g-chooseInfluence', () => {
-            bind.setState({ isChoosingInfluence: true });
+            this.setState({ isChoosingInfluence: true });
         });
         this.props.socket.on('g-closeChallenge', () => {
-            bind.setState({ action: null });
+            this.setState({ action: null });
         });
         this.props.socket.on('g-closeBlock', () => {
-            bind.setState({ blockingAction: null });
+            this.setState({ blockingAction: null });
         });
         this.props.socket.on('g-closeBlockChallenge', () => {
-            bind.setState({ blockChallengeRes: null });
+            this.setState({ blockChallengeRes: null });
         });
     }
 
