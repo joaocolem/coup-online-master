@@ -7,7 +7,7 @@ import { useUser} from './UserContext'
 import  LanguageStrings from './utils/strings'
 
 
-const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000';
 
 const CreateGame = () => {
     const strings = LanguageStrings()
