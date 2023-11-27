@@ -1,31 +1,20 @@
 const express = require('express');
 const moment = require('moment');
-
-// Server/express setup
-const app = express();
 const cors = require('cors');
+
+const CoupGame = require('./game/coup');
+const utilities = require('./utilities/utilities');
+const { DataBase } = require('./modal/base.js')
+
+const db = DataBase
+const app = express();
 app.use(cors());
+
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-const CoupGame = require('./game/coup');
-// const game = new CoupGame([ { name: 'Ethan',
-// socketID: '/DPRI33#OJIB1ERYp-M_K-m5AAAD',
-// isReady: true },
-// { name: 'Joe',
-// socketID: '/DPRI33#FbwKBDCgYjPrTgyfAAAE',
-// isReady: true },
-// { name: 'MAMA',
-// socketID: '/DPRI33#NVzRGTKOfFh7IDqHAAAF',
-// isReady: true } ], '', '')
-// game.start();
-// require("./routes")(app);
-const utilities = require('./utilities/utilities');
-
-// Constants
 const port = 8000;
 
-let namespaces = {}; //AKA party rooms
-
+let namespaces = {};
 
 app.get('/createNamespace', function (req, res) { 
     let newNamespace = '';
