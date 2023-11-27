@@ -4,15 +4,15 @@ const cors = require('cors');
 
 const CoupGame = require('./game/coup');
 const utilities = require('./utilities/utilities');
-const { DataBase } = require('./modal/base.js')
+const DataBase = require('./model/base.js')
 
-const db = DataBase
+const db = new DataBase();
 const app = express();
 app.use(cors());
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-const port = 8000;
+const port = 4000;
 
 let namespaces = {};
 
@@ -40,6 +40,11 @@ openSocket = (gameSocket, namespace) => {
     let partyLeader = ''
     let started = false;
 
+    gameSocket.on('register', (data) => {
+        console.log(data);
+        // db.connect().then(() => db.insertInto('users', 'name', data.name));
+    });
+
     gameSocket.on('connection', (socket) => {
         console.log('id: ' + socket.id);
         players.push({
@@ -59,10 +64,6 @@ openSocket = (gameSocket, namespace) => {
             console.log(partyMembers);
             gameSocket.emit('partyUpdate', partyMembers) ;
         }
-
-        // socket.on('g-actionDecision', (action) => {
-        //     namespaces[namespace].onChooseAction(action);
-        // })
 
         socket.on('setName', (name) => { //when client joins, it will immediately set its name
             console.log(started)

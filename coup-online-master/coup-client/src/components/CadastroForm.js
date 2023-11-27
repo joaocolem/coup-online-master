@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import './CadastroFormStyle.css';
 import  LanguageStrings from './utils/strings';
-
+import io from 'socket.io-client';
 
 const CadastroForm = () => {
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [senha, setSenha] = useState('');
   const [mensagemErro, setMensagemErro] = useState('');
-  const strings = LanguageStrings()
   
+  const strings = LanguageStrings()
+  const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000';
+  const socket = io(baseUrl);
+
   const handleCadastro = () => {
-    // Verifica se todos os campos estão preenchidos e o email tem o formato correto
     if (email && nickname && senha && email.includes('@') && email.includes('.com')) {
-      // Lógica para lidar com os dados do formulário (por exemplo, enviar para o servidor)
       console.log('Email:', email);
       console.log('Nickname:', nickname);
       console.log('Senha:', senha);
+
+      socket('register', 'Lucas');
+
       setMensagemErro(''); // Limpa a mensagem de erro se estiver presente
     } else {
       // Define a mensagem de erro
