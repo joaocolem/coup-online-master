@@ -39,7 +39,8 @@ const Coup = (props) => {
         waiting: true,
         disconnected: false,
     });
-
+    
+    const [isUpdate, setIsUpdate] = useState(false);
     const [isRenderPlay, setIsRenderPlay] = useState(false);
 
     const playAgainButton = (
@@ -204,7 +205,7 @@ const Coup = (props) => {
             props.socket.off('g-closeBlockChallenge', handleCloseBlockChallenge);
             props.socket.off('g-gameRestart', handlePlayAgain);
         };
-    }, [props.socket, props.name, state]);
+    }, [props.socket, props.name, state, isUpdate]);
 
     const deductCoins = (amount) => {
         let res = {
@@ -343,6 +344,7 @@ const Coup = (props) => {
 
     if (state.isChoosingInfluence) {
         isWaiting = false;
+
         chooseInfluenceDecision = (
             <ChooseInfluence
                 doneChooseInfluence={doneChooseInfluence}
@@ -351,6 +353,7 @@ const Coup = (props) => {
                 influences={state.players.filter((x) => x.name === props.name)[0].influences}
             ></ChooseInfluence>
         );
+
     }
 
     if (state.action != null || state.blockChallengeRes != null || state.blockingAction !== null) {

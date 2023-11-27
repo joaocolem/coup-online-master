@@ -13,6 +13,7 @@ const ChooseInfluence = (props) => {
         console.log(res);
         props.socket.emit('g-chooseInfluenceDecision', res);
         props.doneChooseInfluence();
+            
     };
 
     const influences = props.influences.map((x, index) => (

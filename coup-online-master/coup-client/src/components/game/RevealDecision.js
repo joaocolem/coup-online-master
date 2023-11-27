@@ -14,6 +14,8 @@ const RevealDecision = (props) => {
         block_steal: ['ambassador', 'captain'],
         block_assassinate: ['contessa'],
     };
+    
+
 
     const selectInfluence = (influence) => {
         const res = {
@@ -28,6 +30,15 @@ const RevealDecision = (props) => {
         console.log(res);
         props.socket.emit('g-revealDecision', res);
         props.doneReveal();
+
+        if(res.counterAction == 'block_assassinate' && res.revealedCard != 'contessa' ){
+            const ress = {
+                    influence: res.revealedCard,
+                    playerName: props.name
+            };
+            props.socket.emit('g-chooseInfluenceDecision', ress);
+        }
+        console.log("reveal")
     };
 
     const influences = props.influences.map((x, index) => (
