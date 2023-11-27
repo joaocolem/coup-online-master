@@ -2,7 +2,7 @@ const pg = require('pg');
 
 const { Pool } = pg;
 
-class DataBase {
+class DataBase{
     #pool;
     #client;
 
@@ -14,7 +14,7 @@ class DataBase {
 
         this.#pool = new Pool({
             user: 'postgres',
-            host: '172.18.0.3',
+            host: '172.17.0.2',
             database: 'mydb',
             password: "1234",
             port: 5432,
@@ -23,9 +23,11 @@ class DataBase {
         this.#pool.on('error', (err, _) => {
             console.error('Error on Pool', err);
             process.exit(-1);
-        });
-
-        this.client = await this.#pool.connect();
+        });   
+    }
+    
+    async connect() {
+        this.#client = await this.#pool.connect();
     }
 
     async shutdown() {
@@ -33,9 +35,14 @@ class DataBase {
     }
 
     async insertInto(table, field, value) {
-        await this.#client.query(`INSERT INTO ${table}(${field}) VALUES(${value})`);
+        console.log(await this.#client.query(`INSERT INTO ${table}(${field}) VALUES('${value}');`));
+        this.#client.release();
+    }
+
+    async selectFrom(table, field) {
+        console.log(await this.#client.query(`SELECT ${field} FROM ${table};`));
         this.#client.release();
     }
 }
 
-module.exports.default = DataBase;
+module.exports = DataBase;
