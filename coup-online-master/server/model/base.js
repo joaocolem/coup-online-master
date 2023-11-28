@@ -11,10 +11,9 @@ class DataBase{
     }
 
     async _init() {
-
         this.#pool = new Pool({
             user: 'postgres',
-            host: '172.17.0.2',
+            host: '172.18.0.2',
             database: 'mydb',
             password: "1234",
             port: 5432,
@@ -35,8 +34,25 @@ class DataBase{
     }
 
     async insertInto(table, field, value) {
-        console.log(await this.#client.query(`INSERT INTO ${table}(${field}) VALUES('${value}');`));
-        this.#client.release();
+        try {
+            await this.#client.query(`INSERT INTO ${table}(${field}) VALUES('${value}');`);   
+        } catch (error) {
+            console.error("\nInsertInto", `Error: ${error.message}`);
+        } finally {
+            this.#client.release();
+        }
+    }
+
+    async insertBatchInto(table, field, value) {
+        try {
+            const valuesNormalized = value.reduce((acc, v) => acc += `'${v}',`, ``);
+
+            await this.#client.query(`INSERT INTO ${table}(${field.toString()}) VALUES(${valuesNormalized.slice(0, valuesNormalized.length - 1)});`);
+        } catch (error) {
+            console.error("\nInsertBatchInto", `Error: ${error.message}`);
+        } finally {
+            this.#client.release();
+        }
     }
 
     async selectFrom(table, field) {

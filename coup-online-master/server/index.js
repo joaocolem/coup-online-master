@@ -40,11 +40,6 @@ openSocket = (gameSocket, namespace) => {
     let partyLeader = ''
     let started = false;
 
-    gameSocket.on('register', (data) => {
-        console.log(data);
-        // db.connect().then(() => db.insertInto('users', 'name', data.name));
-    });
-
     gameSocket.on('connection', (socket) => {
         console.log('id: ' + socket.id);
         players.push({
@@ -125,7 +120,15 @@ openSocket = (gameSocket, namespace) => {
             })
             console.log(Object.keys(gameSocket['sockets']).length)
             updatePartyList();
-        })
+        });
+
+        socket.on('register', (data) => {
+            db
+            .connect()
+            .then(() => {
+                db.insertBatchInto('users', ['name', 'email', 'password', 'nickname'], data);
+            });
+        });
     });
     let checkEmptyInterval = setInterval(() => {
         // console.log(Object.keys(namespaces))
