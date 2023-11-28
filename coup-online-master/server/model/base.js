@@ -13,7 +13,7 @@ class DataBase{
     async _init() {
         this.#pool = new Pool({
             user: 'postgres',
-            host: '172.18.0.2',
+            host: '172.17.0.3',
             database: 'mydb',
             password: "1234",
             port: 5432,
@@ -56,8 +56,17 @@ class DataBase{
     }
 
     async selectFrom(table, field) {
-        console.log(await this.#client.query(`SELECT ${field} FROM ${table};`));
-        this.#client.release();
+        let response;
+
+        try {
+            response = await this.#client.query(`SELECT ${field} FROM ${table};`);
+        } catch (error) {
+            console.error("\nSelectFrom", `Error: ${error.message}`);
+        } finally {
+            this.#client.release();
+        }
+
+        return await response.rows;
     }
 }
 
