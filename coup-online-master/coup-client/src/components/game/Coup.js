@@ -217,6 +217,7 @@ const Coup = (props) => {
 
     const doneAction = () => {
         setState((prev) => ({ ...prev, isChooseAction: false }));
+        
     };
 
     const doneChallengeBlockingVote = () => {
@@ -250,8 +251,11 @@ const Coup = (props) => {
         }
     };
 
-    const doneReveal = () => {
+    const doneReveal = (dataInfluence) => {
         setState((prev) => ({ ...prev, revealingRes: null }));
+        if(dataInfluence){
+            state.players.filter((x) => x.name === props.name)[0].influences.filter((i) => i !== dataInfluence )
+        }
     };
 
     const doneChooseInfluence = () => {
@@ -344,7 +348,6 @@ const Coup = (props) => {
 
     if (state.isChoosingInfluence) {
         isWaiting = false;
-
         chooseInfluenceDecision = (
             <ChooseInfluence
                 doneChooseInfluence={doneChooseInfluence}
@@ -499,8 +502,8 @@ const Coup = (props) => {
     
             <div className="DecisionsSection">
                 {isWaiting && waiting}
-                {revealDecision}
                 {chooseInfluenceDecision}
+                {revealDecision}
                 {actionDecision}
                 {exchangeInfluences}
                 {challengeDecision}

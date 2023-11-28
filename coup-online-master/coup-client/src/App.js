@@ -52,7 +52,7 @@ function App() {
                 <Home />
               </Route>
             </Switch>
-             {/* Adicione o botão de alternância de idioma aqui */}
+           
           </div>
           
         </Router>
