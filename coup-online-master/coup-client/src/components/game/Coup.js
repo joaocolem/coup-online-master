@@ -251,11 +251,8 @@ const Coup = (props) => {
         }
     };
 
-    const doneReveal = (dataInfluence) => {
+    const doneReveal = () => {
         setState((prev) => ({ ...prev, revealingRes: null }));
-        if(dataInfluence){
-            state.players.filter((x) => x.name === props.name)[0].influences.filter((i) => i !== dataInfluence )
-        }
     };
 
     const doneChooseInfluence = () => {

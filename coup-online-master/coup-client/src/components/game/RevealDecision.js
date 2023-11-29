@@ -1,7 +1,6 @@
 import React from 'react';
 import LanguageStrings from '../utils/strings';
 const RevealDecision = (props) => {
-    console.log("entrou reava")
     const strings = LanguageStrings()
     const act = props.res.isBlock ? props.res.counterAction.counterAction : props.res.action.action;
 
@@ -27,23 +26,17 @@ const RevealDecision = (props) => {
             isBlock: props.res.isBlock,
         };
 
-        console.log(res);
         props.socket.emit('g-revealDecision', res);
-        //props.doneReveal();
 
-
-        console.log("reveal")
-        console.log(res.counterAction.counterAction)
-        if(res.counterAction.counterAction == "block_assassinate"){
+        if(res.counterAction?.counterAction == "block_assassinate" &&  res.revealedCard != 'contessa'){
             const ress = {
                     influence: res.revealedCard,
                     playerName: props.name
             };
-            //props.socket.emit('g-chooseInfluenceDecision', ress);
-            console.log("a")
-            console.log( res.revealedCard)
-            props.doneReveal(res.revealedCard);
-        }else(props.doneReveal(null))
+            props.socket.emit('g-blockAssassinateProblem', ress);
+        }
+        props.doneReveal();
+
     };
 
     const influences = props.influences.map((x, index) => (

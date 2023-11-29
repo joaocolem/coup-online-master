@@ -35,7 +35,7 @@ class CoupGame {
 
         for (let i = 0; i < this.players.length; i++) {
             const player = this.players[i];
-            player.money = 2;
+            player.money = 3;
             player.influences = [this.deck.pop(), this.deck.pop()];
             player.isDead = false;
         }
@@ -54,6 +54,7 @@ class CoupGame {
             socket.on('g-revealDecision', (res) => this.handleRevealDecision(res));
             socket.on('g-chooseInfluenceDecision', (res) => this.handleChooseInfluenceDecision(res));
             socket.on('g-chooseExchangeDecision', (res) => this.handleChooseExchangeDecision(res));
+            socket.on('g-blockAssassinateProblem', (res) => this.handleBlockAssassinateProblem(res));
         });
     }
 
@@ -226,6 +227,7 @@ class CoupGame {
                             break;
                         }
                     }
+                    this.updatePlayers();
                     this.nextTurn();
                 }
             }
@@ -249,6 +251,23 @@ class CoupGame {
             this.nextTurn();
         }
     }
+
+    handleBlockAssassinateProblem(res){
+        // res.influence, res.playerName
+        const playerIndex = this.nameIndexMap[res.playerName];
+
+            this.gameSocket.emit("g-addLog", `${res.playerName} lost ddddtheir ${res.influence}`);
+            for (let i = 0; i < this.players[playerIndex].influences.length; i++) {
+                if (this.players[playerIndex].influences[i] === res.influence) {
+                    this.deck.push(this.players[playerIndex].influences[i]);
+                    this.deck = gameUtils.shuffleArray(this.deck);
+                    this.players[playerIndex].influences.splice(i, 1);
+                    break;
+                }
+            this.updatePlayers();
+        }
+    }
+
 
     handleChooseExchangeDecision(res) {
         // res.playerName, res.kept, res.putBack = ["influence","influence"]

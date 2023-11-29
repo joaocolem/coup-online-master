@@ -38,7 +38,7 @@ function buildPlayers(players) {
 
     players.forEach((x) => {
         delete x.chosen;
-        x.money = 2;
+        x.money = 3;
         x.influences = [];
         x.isDead = false;
         x.color = colors.pop();
