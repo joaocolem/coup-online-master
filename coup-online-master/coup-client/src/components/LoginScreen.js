@@ -1,20 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useUser } from '../components/UserContext'; // Importa o hook useUser
+
 import './CadastroFormStyle.css';
 import  LanguageStrings from './utils/strings'
+import { connectSocket } from './utils/socket_utils.js';
 
 const LoginScreen = () => {
   const history = useHistory();
   const { loginUser } = useUser(); // Obtém a função loginUser do contexto
-
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mensagemErro, setMensagemErro] = useState('');
-  const strings = LanguageStrings()
+  const [socket, setSocket] = useState(null);
+  const [user, setUser] = useState({});
+  const strings = LanguageStrings();
+
+  useEffect(() => {
+    if(socket) {
+      socket.emit('request-login', user);
+
+      // CONFIGURAR NO BACK ESSE EMIT E FAZER TODA A VERIFICACAO DO LOGIN
+    }
+
+    setSocket(null);
+  }, [socket]);
 
   const handleLogin = () => {
+    connectSocket().then(data => setSocket(data));
+    setUser({email, senha});
+    
+
+
+    // OLD:
+
     // Lógica de autenticação (pode ser ajustada conforme a lógica real de autenticação no seu aplicativo)
+    
     if (email === 'a@.com' && senha === '123') {
       // Lógica bem-sucedida de login
       console.log('Login bem-sucedido!');
