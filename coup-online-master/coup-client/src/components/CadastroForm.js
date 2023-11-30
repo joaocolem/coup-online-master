@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import './CadastroFormStyle.css';
 import  LanguageStrings from './utils/strings';
-import io from 'socket.io-client';
-import axios from 'axios';
+import { connectSocket } from './utils/socket_utils.js';
 
 const CadastroForm = () => {
   const [email, setEmail] = useState('');
@@ -14,9 +15,8 @@ const CadastroForm = () => {
   const [cadastro, setCadastro] = useState(null);
   
   const strings = LanguageStrings()
-  const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000';
+  const history = useHistory();
 
-  
   useEffect(() => {
     if(socket) {
       socket.emit('register', cadastro);
@@ -27,7 +27,7 @@ const CadastroForm = () => {
         setMensagemSucesso(message);
         console.log(message);
 
-        window.location.href = `http://${window.location.host}/login`;
+        history.push('/login');
       });
 
       socket.on('nao-cadastrado', (res) => {
@@ -41,24 +41,13 @@ const CadastroForm = () => {
     }
   }, [socket, cadastro]);
 
-  const connectSocket = function() {
-    axios
-      .get(`${baseUrl}/createNamespace`)
-      .then(function (res) {
-        setSocket(io(`${baseUrl}/${res.data.namespace}`));
-      })
-      .catch(function (err) {
-        console.log('error in creating namespace', err);
-      });
-  };
 
   const handleCadastro = () => {
     if (email && nickname && senha && email.includes('@') && email.includes('.com')) {
-      connectSocket();
+      connectSocket().then(data => setSocket(data));
       setCadastro([email, senha, nickname]);
       setMensagemErro('');
     } else {
-      // Define a mensagem de erro
       setMensagemErro('Preencha todos os campos corretamente.');
     }
   };
