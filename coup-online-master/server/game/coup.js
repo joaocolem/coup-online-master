@@ -21,6 +21,7 @@ class CoupGame {
         this.isChooseInfluenceOpen = false;
         this.isExchangeOpen = false;
         this.votes = 0;
+        this.revealedCards;
     }
 
     resetGame(startingPlayer = 0) {
@@ -173,6 +174,9 @@ class CoupGame {
                     // challenge succeeded
                     this.gameSocket.emit("g-addLog", `${res.challenger}'s challenge on ${res.challengee}'s block succeeded`);
                     this.gameSocket.emit("g-addLog", `${res.challengee} lost their ${res.revealedCard}`);
+                    this.gameSocket.emit("g-reavealedCards", res.revealedCard );
+                    
+                    console.log(revealedCards);
                     for (let i = 0; i < this.players[challengeeIndex].influences.length; i++) {
                         if (this.players[challengeeIndex].influences[i] === res.revealedCard) {
                             this.deck.push(this.players[challengeeIndex].influences[i]);

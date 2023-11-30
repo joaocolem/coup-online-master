@@ -15,6 +15,14 @@ import RulesModal from '../RulesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessKnight, faShip, faSkull, faCrown, faHandshake } from '@fortawesome/free-solid-svg-icons';
 import LanguageStrings from '../utils/strings'
+import captainIMG from '../characters/captain.png'
+import contessaIMG from '../characters/contessa.png'
+import ambassadorIMG from '../characters/ambassador.png'
+import assassinIMG from '../characters/assassin.png'
+import dukeIMG from '../characters/duke.png'
+
+
+
 
 const Coup = (props) => {
 
@@ -39,6 +47,9 @@ const Coup = (props) => {
         waiting: true,
         disconnected: false,
     });
+    
+
+    const [reavealedCards, setRevealedCards] = useState([]);
     
     const [isUpdate, setIsUpdate] = useState(false);
     const [isRenderPlay, setIsRenderPlay] = useState(false);
@@ -86,6 +97,13 @@ const Coup = (props) => {
         };
 
         const handleAddLog = (log) => {
+            console.log(reavealedCards)
+            if (log.includes("lost")) {
+                const words = log.split(' ');
+                console.log(words[words.length - 1])
+                setRevealedCards((prevArray) => [...prevArray, words[words.length - 1]]);
+            
+            }
             let splitLog = log.split(' ');
             let coloredLog = splitLog.map((item, index) => {
                 let found = null;
@@ -167,6 +185,11 @@ const Coup = (props) => {
         const handlePlayAgain = () => {
             setIsRenderPlay(false);
             setState((prev) => ({ ...prev, winner: ''}));
+        };
+
+        const handleReavealedCards = (res) => {
+            console.log("sss")
+            console.log(res);
         }
 
         props.socket.on('disconnect', handleDisconnect);
@@ -185,6 +208,8 @@ const Coup = (props) => {
         props.socket.on('g-closeBlock', handleCloseBlock);
         props.socket.on('g-closeBlockChallenge', handleCloseBlockChallenge);
         props.socket.on('g-gameRestart', handlePlayAgain);
+        props.socket.on('g-reavealedCards', handleReavealedCards);
+
 
         return () => {
             // Cleanup listeners
@@ -204,6 +229,7 @@ const Coup = (props) => {
             props.socket.off('g-closeBlock', handleCloseBlock);
             props.socket.off('g-closeBlockChallenge', handleCloseBlockChallenge);
             props.socket.off('g-gameRestart', handlePlayAgain);
+            props.socket.off('g-reavealedCards', handleReavealedCards);
         };
     }, [props.socket, props.name, state, isUpdate]);
 
@@ -416,29 +442,29 @@ const Coup = (props) => {
         influences = (
             <div className="InfluencesContainer">
                 {state.players[state.playerIndex].influences.map((influence, index) => {
-                    let icon = null;
+                    let imageSrc = null;
                     let influenceString = null;
-
+    
                     switch (influence) {
                         case 'duke':
-                            icon = faChessKnight;
-                            influenceString = (strings.dukeInflu)
+                            imageSrc = dukeIMG;
+                            influenceString = strings.dukeInflu;
                             break;
                         case 'captain':
-                            icon = faShip;
-                            influenceString = (strings.captainInflu)
+                            imageSrc = captainIMG;
+                            influenceString = strings.captainInflu;
                             break;
                         case 'assassin':
-                            icon = faSkull;
-                            influenceString = (strings.assassinInflu)
+                            imageSrc = assassinIMG;
+                            influenceString = strings.assassinInflu;
                             break;
                         case 'contessa':
-                            icon = faCrown;
-                            influenceString = (strings.contessaInflu)
+                            imageSrc = contessaIMG;
+                            influenceString = strings.contessaInflu;
                             break;
                         case 'ambassador':
-                            icon = faHandshake;
-                            influenceString = (strings.ambassadorInflu)
+                            imageSrc = ambassadorIMG;
+                            influenceString = strings.ambassadorInflu;
                             break;
                         default:
                             break;
@@ -446,10 +472,21 @@ const Coup = (props) => {
 
                     return (
                         <div key={index} className="InfluenceUnitContainer">
-                            <FontAwesomeIcon icon={icon} style={{ color: `${influenceColorMap[influence]}` }} />
+                           <img
+                            src={imageSrc}
+                            alt={influence}
+                            style={{
+                                width: '200px',
+                                height: '250px',
+                                border: '5px solid #3498db', 
+                                borderRadius: '10px',        
+                                boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' 
+                            }}
+                        />
+
                             <br />
                             <h3>{influenceString}</h3>
-                            </div>
+                        </div>
                     );
                 })}
             </div>
@@ -510,7 +547,7 @@ const Coup = (props) => {
                 {isRenderPlay && playAgainButtonElem}
             </div>
     
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <div className="InfluenceSection">{influences}</div>
             </div>
     

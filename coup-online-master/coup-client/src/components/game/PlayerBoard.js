@@ -16,13 +16,15 @@ export default function PlayerBoard({ players, heroName, currentPlayer }) {
         ...players.slice(0, heroIndex),
     ];
 
+    const larguraDaTela = window.innerWidth;
+    const left6 = ((larguraDaTela/2) - 75).toString() + 'px'
     const positions = [
-        { top: '300px', left: '450px' }, 
-        { top: '150px', left: '450px' }, 
-        { top: '50px',  left: '600px' },  
-        { top: '150px', left: '750px' },
-        { top: '300px', left: '750px' },
-        { top: '400px', left: '600px' },   // Posição 6 (hero)
+        { top: '300px', left: '38%' }, 
+        { top: '150px', left: '38%' }, 
+        { top: '50px',  left: '50%' },  
+        { top: '150px', left: '62%' },
+        { top: '300px', left: '62%' },
+        { top: '400px', left: '50%' },   // Posição 6 (hero)
     ];
 
     const boardItems = rearrangedPlayers.map((player, index) => (
