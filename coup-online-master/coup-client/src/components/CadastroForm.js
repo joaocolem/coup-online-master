@@ -19,6 +19,17 @@ const CadastroForm = () => {
   useEffect(() => {
     if(socket) {
       socket.emit('register', cadastro);
+
+      socket.on('cadastrado', () =>{
+        console.log('cadastrado com sucesso');
+      });
+
+      socket.on('nao-cadastrado', (res) => {
+        const errorKey = res.error.constraint.split('_')[1];
+        const errorMessage = `${errorKey[0].toUpperCase()}${errorKey.slice(1, -1)} ja cadastrado`;
+
+        setMensagemErro(errorMessage);
+      })
     }
   });
 
@@ -36,10 +47,8 @@ const CadastroForm = () => {
   const handleCadastro = () => {
     if (email && nickname && senha && email.includes('@') && email.includes('.com')) {
       connectSocket();
-      
       setCadastro([email, senha, nickname]);
-
-      setMensagemErro(''); // Limpa a mensagem de erro se estiver presente
+      setMensagemErro('');
     } else {
       // Define a mensagem de erro
       setMensagemErro('Preencha todos os campos corretamente.');

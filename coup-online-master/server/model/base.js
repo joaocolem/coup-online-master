@@ -13,7 +13,7 @@ class DataBase{
     async _init() {
         this.#pool = new Pool({
             user: 'postgres',
-            host: '172.17.0.3',
+            host: 'db',
             database: 'mydb',
             password: "1234",
             port: 5432,
@@ -33,26 +33,42 @@ class DataBase{
         await this.#pool.end();
     }
 
-    async insertInto(table, field, value) {
-        try {
-            await this.#client.query(`INSERT INTO ${table}(${field}) VALUES('${value}');`);   
-        } catch (error) {
-            console.error("\nInsertInto", `Error: ${error.message}`);
-        } finally {
-            this.#client.release();
-        }
-    }
+    // async insertInto(table, field, value) {
+    //     try {
+    //         await this.#client.query(`INSERT INTO ${table}(${field}) VALUES('${value}');`);   
+    //     } catch (error) {
+    //         console.error("\nInsertInto", `Error: ${error.message}`);
+    //     } finally {
+    //         this.#client.release();
+    //     }
+    // }
 
-    async insertBatchInto(table, field, value) {
+    async insertInto(table, field, value) {
+        let response;
+
         try {
             const valuesNormalized = value.reduce((acc, v) => acc += `'${v}',`, ``);
+            const query = `
+                INSERT INTO ${table}(${field.toString()}) 
+                VALUES(${valuesNormalized.slice(0, valuesNormalized.length - 1)});
+            `;
 
-            await this.#client.query(`INSERT INTO ${table}(${field.toString()}) VALUES(${valuesNormalized.slice(0, valuesNormalized.length - 1)});`);
+            response = {
+                success: true, 
+                content: await this.#client.query(query),
+            };
+
         } catch (error) {
-            console.error("\nInsertBatchInto", `Error: ${error.message}`);
+            response = {
+                success: false,
+                error: error,
+            };
+
         } finally {
             this.#client.release();
         }
+
+        return await response;
     }
 
     async selectFrom(table, field) {

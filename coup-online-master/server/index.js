@@ -131,7 +131,9 @@ openSocket = (gameSocket, namespace) => {
             db
             .connect()
             .then(() => {
-                db.insertBatchInto('users', ['name', 'email', 'password', 'nickname'], data);
+                db
+                .insertInto('users', ['email', 'password', 'nickname'], data)
+                .then((res) => res.success ? socket.emit('cadastrado') : socket.emit('nao-cadastrado', res));
             });
         });
     });
