@@ -33,16 +33,6 @@ class DataBase{
         await this.#pool.end();
     }
 
-    // async insertInto(table, field, value) {
-    //     try {
-    //         await this.#client.query(`INSERT INTO ${table}(${field}) VALUES('${value}');`);   
-    //     } catch (error) {
-    //         console.error("\nInsertInto", `Error: ${error.message}`);
-    //     } finally {
-    //         this.#client.release();
-    //     }
-    // }
-
     async insertInto(table, field, value) {
         let response;
 
@@ -68,7 +58,7 @@ class DataBase{
             this.#client.release();
         }
 
-        return await response;
+        return response;
     }
 
     async selectFrom(table, field) {

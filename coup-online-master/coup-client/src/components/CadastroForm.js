@@ -9,6 +9,7 @@ const CadastroForm = () => {
   const [nickname, setNickname] = useState('');
   const [senha, setSenha] = useState('');
   const [mensagemErro, setMensagemErro] = useState('');
+  const [mensagemSucesso, setMensagemSucesso] = useState('');
   const [socket, setSocket] = useState(null);
   const [cadastro, setCadastro] = useState(null);
   
@@ -21,17 +22,24 @@ const CadastroForm = () => {
       socket.emit('register', cadastro);
 
       socket.on('cadastrado', () =>{
-        console.log('cadastrado com sucesso');
+        const message = "Cadastrado Com Sucesso!";
+
+        setMensagemSucesso(message);
+        console.log(message);
+
+        window.location.href = `http://${window.location.host}/login`;
       });
 
       socket.on('nao-cadastrado', (res) => {
         const errorKey = res.error.constraint.split('_')[1];
-        const errorMessage = `${errorKey[0].toUpperCase()}${errorKey.slice(1, -1)} ja cadastrado`;
+        const errorMessage = `${errorKey[0].toUpperCase()}${errorKey.slice(1, errorKey.length)} ja cadastrado`;
 
         setMensagemErro(errorMessage);
       })
+
+      setSocket(null);
     }
-  });
+  }, [socket, cadastro]);
 
   const connectSocket = function() {
     axios
@@ -92,7 +100,9 @@ const CadastroForm = () => {
             onChange={(e) => setSenha(e.target.value)}
           />
         </div>
-        {mensagemErro && <p style={{ color: 'red' }}>{mensagemErro}</p>}
+        {
+          mensagemSucesso ? <p style={{ color: 'green' }}>{mensagemSucesso}</p> : mensagemErro && <p style={{ color: 'red' }}>{mensagemErro}</p>
+        }
         <div className="form-group">
           <button
             type="button"
