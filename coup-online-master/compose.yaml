@@ -1,0 +1,44 @@
+services:
+  frontend:
+    build:
+      context: coup-client
+      target: development
+    ports:
+      - 3000:3000
+    networks:
+      - client-side
+    volumes:
+      - ./coup-client:/app/client
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: server
+      target: development
+    ports:
+      - 4000:4000
+    networks:
+      - client-side
+      - server-side
+    volumes:
+      - ./server:/app/server
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: data-base
+      target: database
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=1234
+    networks:
+      - server-side
+    ports:
+      - 5432:5432
+
+networks:
+  client-side: {}
+  server-side: {}
+
