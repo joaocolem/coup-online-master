@@ -8,5 +8,5 @@ CREATE TABLE users (
     nickname varchar(20) UNIQUE
 );
 
-INSERT INTO users(email, password, nickname) VALUES('email@email', '1234', 'nickname');
-INSERT INTO users(email, password, nickname) VALUES('email2@email2', '1234', 'nickname2');
+INSERT INTO users(email, password, nickname) VALUES('email@email.com', '1234', 'nickname');
+INSERT INTO users(email, password, nickname) VALUES('email2@email2.com', '1234', 'nickname2');

@@ -61,18 +61,23 @@ class DataBase{
         return response;
     }
 
-    async selectFrom(table, field) {
+    async selectFrom(table, field = '*', where, data) {
+        const query = `
+            SELECT ${field}
+            FROM ${table}
+            ${ where && data ? `WHERE ${where} = '${data}'` : ``};
+        `;
         let response;
 
         try {
-            response = await this.#client.query(`SELECT ${field} FROM ${table};`);
+            response = await this.#client.query(query);
         } catch (error) {
             console.error("\nSelectFrom", `Error: ${error.message}`);
         } finally {
             this.#client.release();
         }
 
-        return await response.rows;
+        return await response?.rows;
     }
 }
 

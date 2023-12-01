@@ -136,7 +136,24 @@ openSocket = (gameSocket, namespace) => {
                 .then((res) => res.success ? socket.emit('cadastrado') : socket.emit('nao-cadastrado', res));
             });
         });
+
+        socket.on('request-login', (data) => {
+            db
+            .connect()
+            .then(() => {
+                db
+                .selectFrom('users', '*', 'email', data.email)
+                .then( ([ dbData ]) => {
+                    if(dbData) {
+                        dbData.password === data.senha ? socket.emit('login-ok', dbData) : socket.emit('login-not-ok');
+                    } else {
+                        socket.emit('no-login');
+                    }
+                });
+            });
+        })
     });
+
     let checkEmptyInterval = setInterval(() => {
         // console.log(Object.keys(namespaces))
         if(Object.keys(gameSocket['sockets']).length == 0) {

@@ -12,6 +12,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mensagemErro, setMensagemErro] = useState('');
+  const [mensagemSucesso, setMensagemSucesso] = useState('');
   const [socket, setSocket] = useState(null);
   const [user, setUser] = useState({});
   const strings = LanguageStrings();
@@ -20,7 +21,20 @@ const LoginScreen = () => {
     if(socket) {
       socket.emit('request-login', user);
 
-      // CONFIGURAR NO BACK ESSE EMIT E FAZER TODA A VERIFICACAO DO LOGIN
+      socket.on('login-ok', (dbData) => {
+        setMensagemSucesso('Logado com sucesso!')
+        loginUser(dbData);
+        history.push('/play');
+      });
+
+      socket.on('login-not-ok', () => {
+        setMensagemErro('Login invalido!');
+      });
+
+      socket.on('no-login', () => {
+        setMensagemErro('Nao existe nenhum login com essas informacoes!');
+      });
+
     }
 
     setSocket(null);
@@ -29,29 +43,6 @@ const LoginScreen = () => {
   const handleLogin = () => {
     connectSocket().then(data => setSocket(data));
     setUser({email, senha});
-    
-
-
-    // OLD:
-
-    // Lógica de autenticação (pode ser ajustada conforme a lógica real de autenticação no seu aplicativo)
-    
-    if (email === 'a@.com' && senha === '123') {
-      // Lógica bem-sucedida de login
-      console.log('Login bem-sucedido!');
-      setMensagemErro(''); // Limpa a mensagem de erro se estiver presente
-      let nickname = "nick"
-      // Salva os dados do usuário no contexto
-      loginUser({ email, senha, nickname });
-
-      
-
-      // Redireciona para a página /play após o login bem-sucedido
-      history.push('/play');
-    } else {
-      // Mensagem de erro para login falhado
-      setMensagemErro('Credenciais inválidas. Verifique seu e-mail e senha.');
-    }
   };
 
   return (
@@ -74,7 +65,9 @@ const LoginScreen = () => {
             onChange={(e) => setSenha(e.target.value)}
           />
         </div>
-        {mensagemErro && <p style={{ color: 'red' }}>{mensagemErro}</p>}
+        {
+          mensagemSucesso ? <p style={{ color: 'green' }}>{mensagemSucesso}</p> : mensagemErro && <p style={{ color: 'red' }}>{mensagemErro}</p>
+        }
         <div className="form-group">
           <button
             type="button"
