@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import chicken from '../assets/Chicken.svg';
 import RulesModal from './RulesModal';
-import LanguageStrings from './utils/strings'
+import LanguageStrings from './utils/strings';
+import ruseImage from '../assets/Ruse.png';
 
 
 
@@ -14,10 +15,12 @@ const Home = () => {
     const strings = LanguageStrings()
     return (
         <>
+
+        <img src={ruseImage} alt="chicken-leg" style={{ backgroundColor: 'pink' }} />
             <div className="homeContainer">
                 <h1>{strings.welcomeMessage}</h1>
                 <p>{strings.subtitle}</p>
-                <img src={chicken} alt="chicken-leg" />
+
                 <div className="input-group-btn">
                     <Link className="home" to="/create">
                         {strings.createGame}

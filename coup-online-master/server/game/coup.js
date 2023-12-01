@@ -21,6 +21,7 @@ class CoupGame {
         this.isChooseInfluenceOpen = false;
         this.isExchangeOpen = false;
         this.votes = 0;
+        this.revealedCards;
     }
 
     resetGame(startingPlayer = 0) {
@@ -35,7 +36,7 @@ class CoupGame {
 
         for (let i = 0; i < this.players.length; i++) {
             const player = this.players[i];
-            player.money = 2;
+            player.money = 3;
             player.influences = [this.deck.pop(), this.deck.pop()];
             player.isDead = false;
         }
@@ -54,6 +55,7 @@ class CoupGame {
             socket.on('g-revealDecision', (res) => this.handleRevealDecision(res));
             socket.on('g-chooseInfluenceDecision', (res) => this.handleChooseInfluenceDecision(res));
             socket.on('g-chooseExchangeDecision', (res) => this.handleChooseExchangeDecision(res));
+            socket.on('g-blockAssassinateProblem', (res) => this.handleBlockAssassinateProblem(res));
         });
     }
 
@@ -172,6 +174,9 @@ class CoupGame {
                     // challenge succeeded
                     this.gameSocket.emit("g-addLog", `${res.challenger}'s challenge on ${res.challengee}'s block succeeded`);
                     this.gameSocket.emit("g-addLog", `${res.challengee} lost their ${res.revealedCard}`);
+                    this.gameSocket.emit("g-reavealedCards", res.revealedCard );
+                    
+                    console.log(revealedCards);
                     for (let i = 0; i < this.players[challengeeIndex].influences.length; i++) {
                         if (this.players[challengeeIndex].influences[i] === res.revealedCard) {
                             this.deck.push(this.players[challengeeIndex].influences[i]);
@@ -226,6 +231,7 @@ class CoupGame {
                             break;
                         }
                     }
+                    this.updatePlayers();
                     this.nextTurn();
                 }
             }
@@ -249,6 +255,23 @@ class CoupGame {
             this.nextTurn();
         }
     }
+
+    handleBlockAssassinateProblem(res){
+        // res.influence, res.playerName
+        const playerIndex = this.nameIndexMap[res.playerName];
+
+            this.gameSocket.emit("g-addLog", `${res.playerName} lost ddddtheir ${res.influence}`);
+            for (let i = 0; i < this.players[playerIndex].influences.length; i++) {
+                if (this.players[playerIndex].influences[i] === res.influence) {
+                    this.deck.push(this.players[playerIndex].influences[i]);
+                    this.deck = gameUtils.shuffleArray(this.deck);
+                    this.players[playerIndex].influences.splice(i, 1);
+                    break;
+                }
+            this.updatePlayers();
+        }
+    }
+
 
     handleChooseExchangeDecision(res) {
         // res.playerName, res.kept, res.putBack = ["influence","influence"]

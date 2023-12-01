@@ -33,12 +33,31 @@ function buildNameMap(players, key) {
 }
 
 function buildPlayers(players) {
-    const colors = ['#73C373', '#7AB8D3', '#DD6C75', '#8C6CE6', '#EA9158', '#CB8F8F', '#FFC303'];
+    const colors = [
+        '#4A90E2',
+        '#9370DB',
+        '#8A2BE2',
+        '#8B4513',
+        '#4169E1',
+        '#800000',
+        '#2E8B57',
+        '#9932CC',
+        '#B22222',
+        '#008080',
+        '#6A5ACD',
+        '#DC143C',
+        '#556B2F',
+        '#483D8B',
+        '#A52A2A'
+      ];
+      
+    
+
     shuffleArray(colors);
 
     players.forEach((x) => {
         delete x.chosen;
-        x.money = 2;
+        x.money = 3;
         x.influences = [];
         x.isDead = false;
         x.color = colors.pop();
