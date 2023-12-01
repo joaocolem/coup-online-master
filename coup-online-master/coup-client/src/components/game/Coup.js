@@ -15,11 +15,8 @@ import RulesModal from '../RulesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessKnight, faShip, faSkull, faCrown, faHandshake } from '@fortawesome/free-solid-svg-icons';
 import LanguageStrings from '../utils/strings'
-import captainIMG from '../characters/captain.png'
-import contessaIMG from '../characters/contessa.png'
-import ambassadorIMG from '../characters/ambassador.png'
-import assassinIMG from '../characters/assassin.png'
-import dukeIMG from '../characters/duke.png'
+import { captainIMG, contessaIMG, ambassadorIMG, assassinIMG, dukeIMG } from '../characters';
+import RevealedCards from './RevealedCards';
 
 
 
@@ -49,7 +46,8 @@ const Coup = (props) => {
     });
     
 
-    const [reavealedCards, setRevealedCards] = useState([]);
+    const [revealedCards, setRevealedCards] = useState([]);
+    const [revealedCardsPlayer, setRevealedCardsPlayer] = useState([]);
     
     const [isUpdate, setIsUpdate] = useState(false);
     const [isRenderPlay, setIsRenderPlay] = useState(false);
@@ -97,19 +95,19 @@ const Coup = (props) => {
         };
 
         const handleAddLog = (log) => {
-            console.log(reavealedCards)
-            if (log.includes("lost")) {
-                const words = log.split(' ');
-                console.log(words[words.length - 1])
-                setRevealedCards((prevArray) => [...prevArray, words[words.length - 1]]);
-            
-            }
+
             let splitLog = log.split(' ');
             let coloredLog = splitLog.map((item, index) => {
                 let found = null;
                 state.players.forEach((player) => {
                     if (item === player.name) {
                         found = <b style={{ color: player.color }}>{player.name} </b>;
+                        if (log.includes("lost")) {
+                            const words = log.split(' ');
+                            setRevealedCards((prevArray) => [...prevArray, words[words.length - 1]]);
+                            setRevealedCardsPlayer((prevArray) => [...prevArray, player.name]);
+                            
+                        }
                     }
                 });
                 if (found) {
@@ -476,7 +474,7 @@ const Coup = (props) => {
                             src={imageSrc}
                             alt={influence}
                             style={{
-                                width: '200px',
+                                width: 'auto',
                                 height: '250px',
                                 border: '5px solid #3498db', 
                                 borderRadius: '10px',        
@@ -526,6 +524,7 @@ const Coup = (props) => {
                 <RulesModal />
                 <CheatSheetModal />
                 <EventLog logs={state.logs}></EventLog>
+
             </div>
     
             <PlayerBoard
@@ -549,10 +548,14 @@ const Coup = (props) => {
     
             <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <div className="InfluenceSection">{influences}</div>
-            </div>
+            </div>            
+
     
             {isRenderPlay && state.playAgain}
             <b>{isRenderPlay && state.winner}</b>
+            <div className='EventLogContainer' style={{marginTop: '100px'}}>
+                <RevealedCards cards={revealedCards} players={revealedCardsPlayer}/>
+            </div>
         </div>
     );
     

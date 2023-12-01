@@ -187,6 +187,17 @@
     top: 5px;
 }
 
+
+.RevealedCards {
+  /* border-left: 0px; */
+  padding-right: 40px;
+  padding-left: 5px;
+  position: absolute;
+  font-size: 12px;
+  right: 15px;
+  top: 60px;
+}
+
 .EventLogContainer {
     border-right: 2px solid #707070;
     /* border-left: 0px; */
@@ -199,6 +210,10 @@
     text-align: right;
     line-height: 40%;
 }
+
+
+
+
 .EventLogBody {
     overflow-y: scroll;
     height: 9VH;
