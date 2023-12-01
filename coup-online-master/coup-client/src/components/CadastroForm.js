@@ -1,25 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import './CadastroFormStyle.css';
 import  LanguageStrings from './utils/strings';
-
+import { connectSocket } from './utils/socket_utils.js';
 
 const CadastroForm = () => {
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [senha, setSenha] = useState('');
   const [mensagemErro, setMensagemErro] = useState('');
-  const strings = LanguageStrings()
+  const [mensagemSucesso, setMensagemSucesso] = useState('');
+  const [socket, setSocket] = useState(null);
+  const [cadastro, setCadastro] = useState(null);
   
+  const strings = LanguageStrings()
+  const history = useHistory();
+
+  useEffect(() => {
+    if(socket) {
+      socket.emit('register', cadastro);
+
+      socket.on('cadastrado', () =>{
+        const message = "Cadastrado Com Sucesso!";
+
+        setMensagemSucesso(message);
+        console.log(message);
+
+        history.push('/login');
+      });
+
+      socket.on('nao-cadastrado', (res) => {
+        const errorKey = res.error.constraint.split('_')[1];
+        const errorMessage = `${errorKey[0].toUpperCase()}${errorKey.slice(1, errorKey.length)} ja cadastrado`;
+
+        setMensagemErro(errorMessage);
+      })
+
+      setSocket(null);
+    }
+  }, [socket, cadastro]);
+
+
   const handleCadastro = () => {
-    // Verifica se todos os campos estão preenchidos e o email tem o formato correto
     if (email && nickname && senha && email.includes('@') && email.includes('.com')) {
-      // Lógica para lidar com os dados do formulário (por exemplo, enviar para o servidor)
-      console.log('Email:', email);
-      console.log('Nickname:', nickname);
-      console.log('Senha:', senha);
-      setMensagemErro(''); // Limpa a mensagem de erro se estiver presente
+      connectSocket().then(data => setSocket(data));
+      setCadastro([email, senha, nickname]);
+      setMensagemErro('');
     } else {
-      // Define a mensagem de erro
       setMensagemErro('Preencha todos os campos corretamente.');
     }
   };
@@ -61,7 +89,9 @@ const CadastroForm = () => {
             onChange={(e) => setSenha(e.target.value)}
           />
         </div>
-        {mensagemErro && <p style={{ color: 'red' }}>{mensagemErro}</p>}
+        {
+          mensagemSucesso ? <p style={{ color: 'green' }}>{mensagemSucesso}</p> : mensagemErro && <p style={{ color: 'red' }}>{mensagemErro}</p>
+        }
         <div className="form-group">
           <button
             type="button"

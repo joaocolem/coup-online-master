@@ -1,31 +1,20 @@
 const express = require('express');
 const moment = require('moment');
-
-// Server/express setup
-const app = express();
 const cors = require('cors');
+
+const CoupGame = require('./game/coup');
+const utilities = require('./utilities/utilities');
+const DataBase = require('./model/base.js')
+
+const db = new DataBase();
+const app = express();
 app.use(cors());
+
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-const CoupGame = require('./game/coup');
-// const game = new CoupGame([ { name: 'Ethan',
-// socketID: '/DPRI33#OJIB1ERYp-M_K-m5AAAD',
-// isReady: true },
-// { name: 'Joe',
-// socketID: '/DPRI33#FbwKBDCgYjPrTgyfAAAE',
-// isReady: true },
-// { name: 'MAMA',
-// socketID: '/DPRI33#NVzRGTKOfFh7IDqHAAAF',
-// isReady: true } ], '', '')
-// game.start();
-// require("./routes")(app);
-const utilities = require('./utilities/utilities');
+const port = 4000;
 
-// Constants
-const port = 8000;
-
-let namespaces = {}; //AKA party rooms
-
+let namespaces = {};
 
 app.get('/createNamespace', function (req, res) { 
     let newNamespace = '';
@@ -51,6 +40,11 @@ openSocket = (gameSocket, namespace) => {
     let partyLeader = ''
     let started = false;
 
+    gameSocket.on('register', (data) => {
+        console.log(data);
+        // db.connect().then(() => db.insertInto('users', 'name', data.name));
+    });
+
     gameSocket.on('connection', (socket) => {
         console.log('id: ' + socket.id);
         players.push({
@@ -70,10 +64,6 @@ openSocket = (gameSocket, namespace) => {
             console.log(partyMembers);
             gameSocket.emit('partyUpdate', partyMembers) ;
         }
-
-        // socket.on('g-actionDecision', (action) => {
-        //     namespaces[namespace].onChooseAction(action);
-        // })
 
         socket.on('setName', (name) => { //when client joins, it will immediately set its name
             console.log(started)
@@ -135,8 +125,35 @@ openSocket = (gameSocket, namespace) => {
             })
             console.log(Object.keys(gameSocket['sockets']).length)
             updatePartyList();
+        });
+
+        socket.on('register', (data) => {
+            db
+            .connect()
+            .then(() => {
+                db
+                .insertInto('users', ['email', 'password', 'nickname'], data)
+                .then((res) => res.success ? socket.emit('cadastrado') : socket.emit('nao-cadastrado', res));
+            });
+        });
+
+        socket.on('request-login', (data) => {
+            db
+            .connect()
+            .then(() => {
+                db
+                .selectFrom('users', '*', 'email', data.email)
+                .then( ([ dbData ]) => {
+                    if(dbData) {
+                        dbData.password === data.senha ? socket.emit('login-ok', dbData) : socket.emit('login-not-ok');
+                    } else {
+                        socket.emit('no-login');
+                    }
+                });
+            });
         })
     });
+
     let checkEmptyInterval = setInterval(() => {
         // console.log(Object.keys(namespaces))
         if(Object.keys(gameSocket['sockets']).length == 0) {
