@@ -1,9 +1,7 @@
 FROM node:21-alpine3.17 AS development
 
 WORKDIR /app/server
-COPY ./package.json /app/server
-COPY ./package-lock.json /app/server
-RUN npm i
-COPY  . /app/server
+COPY package.json .
+COPY package-lock.json .
 
-CMD ["npm", "start"]
+CMD ["sh", "-c", "npm i && npm start"]
