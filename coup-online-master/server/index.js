@@ -12,7 +12,7 @@ app.use(cors());
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-const port = 4000;
+const port = process.env.REACT_APP_SERVER_PORT;
 
 let namespaces = {};
 
@@ -173,6 +173,6 @@ startGame = (players, gameSocket, namespace) => {
     namespaces[namespace.substring(1)].start();
 }
 
-server.listen(process.env.PORT || port, function(){
-    console.log(`listening on ${process.env.PORT || port}`);
+server.listen(port, function(){
+    console.log(`listening on ${port}`);
 });

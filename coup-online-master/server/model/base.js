@@ -12,11 +12,10 @@ class DataBase{
 
     async _init() {
         this.#pool = new Pool({
-            user: 'postgres',
-            host: 'db',
-            database: 'mydb',
-            password: "1234",
-            port: 5432,
+            host: process.env.PGHOST,
+            user: process.env.POSTGRES_USER,
+            password: process.env.POSTGRES_PASSWORD,
+            database: process.env.POSTGRES_DB,
         });
 
         this.#pool.on('error', (err, _) => {

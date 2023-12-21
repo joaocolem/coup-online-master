@@ -19,7 +19,7 @@ const JoinGame = () => {
     const [socket, setSocket] = useState(null);
     const strings = LanguageStrings()
 
-    const baseUrl = process.env.REACT_APP_BACKEND_URL || `http://localhost:${process.env.SERVER_PORT}`;
+    const baseUrl = process.env.REACT_APP_BACKEND_URL || `http://localhost:${process.env.REACT_APP_SERVER_PORT}`;
 
     const onNameChange = (name) => {
         setName(name);
