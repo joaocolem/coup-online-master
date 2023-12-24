@@ -1,16 +1,12 @@
 const pg = require('pg');
+const helper = require('./baseHelper.js');
 
 const { Pool } = pg;
 
 class DataBase{
     #pool;
-    #client;
 
     constructor() {    
-        this._init();
-    }
-
-    async _init() {
         this.#pool = new Pool({
             host: process.env.PGHOST,
             user: process.env.POSTGRES_USER,
@@ -23,41 +19,19 @@ class DataBase{
             process.exit(-1);
         });   
     }
-    
-    async connect() {
-        this.#client = await this.#pool.connect();
-    }
 
     async shutdown() {
         await this.#pool.end();
     }
 
     async insertInto(table, field, value) {
-        let response;
+        const valuesNormalized = helper.normalizeValue(value);
+        const query = `
+            INSERT INTO ${table}(${field.toString()}) 
+            VALUES(${valuesNormalized});
+        `;
 
-        try {
-            const valuesNormalized = value.reduce((acc, v) => acc += `'${v}',`, ``);
-            const query = `
-                INSERT INTO ${table}(${field.toString()}) 
-                VALUES(${valuesNormalized.slice(0, valuesNormalized.length - 1)});
-            `;
-
-            response = {
-                success: true, 
-                content: await this.#client.query(query),
-            };
-
-        } catch (error) {
-            response = {
-                success: false,
-                error: error,
-            };
-
-        } finally {
-            this.#client.release();
-        }
-
-        return response;
+        return await this.#pool.query(query);
     }
 
     async selectFrom(table, field = '*', where, data) {
@@ -66,17 +40,8 @@ class DataBase{
             FROM ${table}
             ${ where && data ? `WHERE ${where} = '${data}'` : ``};
         `;
-        let response;
 
-        try {
-            response = await this.#client.query(query);
-        } catch (error) {
-            console.error("\nSelectFrom", `Error: ${error.message}`);
-        } finally {
-            this.#client.release();
-        }
-
-        return await response?.rows;
+        return await this.#pool.query(query)?.rows;
     }
 }
 
