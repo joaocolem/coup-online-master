@@ -1,5 +1,5 @@
-FROM node:21-alpine3.17 AS development
-
+ARG version
+FROM node:$version AS development
 WORKDIR /app/client
 COPY package.json .
 COPY package-lock.json .
