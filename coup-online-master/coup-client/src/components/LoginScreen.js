@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useUser } from '../components/UserContext'; // Importa o hook useUser
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import './CadastroFormStyle.css';
 import  LanguageStrings from './utils/strings'
@@ -15,6 +16,7 @@ const LoginScreen = () => {
   const [mensagemSucesso, setMensagemSucesso] = useState('');
   const [socket, setSocket] = useState(null);
   const [user, setUser] = useState({});
+  const [recaptcha, setRecaptcha] = useState(null);
   const strings = LanguageStrings();
 
   useEffect(() => {
@@ -41,9 +43,18 @@ const LoginScreen = () => {
   }, [socket]);
 
   const handleLogin = () => {
+    if(!recaptcha) {
+      setMensagemErro("Complete a verificacao!");
+      return;
+    }
+    
     connectSocket().then(data => setSocket(data));
     setUser({email, senha});
   };
+
+  const handleReCaptcha = function(response) {
+    setRecaptcha(response);
+  }
 
   return (
     <div className="login-container">
@@ -68,6 +79,10 @@ const LoginScreen = () => {
         {
           mensagemSucesso ? <p style={{ color: 'green' }}>{mensagemSucesso}</p> : mensagemErro && <p style={{ color: 'red' }}>{mensagemErro}</p>
         }
+          <ReCAPTCHA
+            sitekey={process.env.REACT_APP_RECAPTCHA_SERVER_KEY}
+            onChange={handleReCaptcha}
+          />
         <div className="form-group">
           <button
             type="button"
