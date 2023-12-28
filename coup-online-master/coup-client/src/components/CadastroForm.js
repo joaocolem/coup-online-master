@@ -31,7 +31,8 @@ const CadastroForm = () => {
       });
 
       socket.on('nao-cadastrado', (res) => {
-        const errorKey = res.error.constraint.split('_')[1];
+
+        const errorKey = res.constraint.split('_')[1];
         const errorMessage = `${errorKey[0].toUpperCase()}${errorKey.slice(1, errorKey.length)} ja cadastrado`;
 
         setMensagemErro(errorMessage);

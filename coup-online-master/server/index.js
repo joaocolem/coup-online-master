@@ -129,31 +129,26 @@ openSocket = (gameSocket, namespace) => {
 
         socket.on('register', (data) => {
             db
-            .connect()
-            .then(() => {
-                db
-                .insertInto('users', ['email', 'password', 'nickname'], data)
-                .then((res) => res.success ? socket.emit('cadastrado') : socket.emit('nao-cadastrado', res));
-            });
+            .insertInto('users', ['email', 'password', 'nickname'], data)
+            .then(() => socket.emit('cadastrado'))
+            .catch(err => socket.emit('nao-cadastrado', err));
         });
 
         socket.on('request-login', (data) => {
             db
-            .connect()
-            .then(() => {
-                db
-                .selectFrom('users', '*', 'email', data.email)
-                .then( ([ dbData ]) => {
-                    if(dbData) {
-                        dbData.password === data.senha ? socket.emit('login-ok', dbData) : socket.emit('login-not-ok');
-                    } else {
-                        socket.emit('no-login');
-                    }
-                });
-            });
-        })
+            .selectFrom('users', '*', 'email', data.email)
+            .then( ([ dbData ]) => {
+                if(!dbData) return socket.emit('no-login');
 
-        socket.on('recuperar-senha', email => {
+                dbData.password === data.senha ? socket.emit('login-ok', dbData) : socket.emit('login-not-ok');
+            })
+            .catch(err => {
+                console.error(err);
+                socket.emit('no-login');
+            });
+        });
+      
+       socket.on('recuperar-senha', email => {
             utilities.sendemail(email)
             .then(() => console.log('Enviado'))
             .catch(err => console.log(err));
@@ -161,11 +156,10 @@ openSocket = (gameSocket, namespace) => {
 
         socket.on('redefinir-senha', data => {
             console.log(data);
-        })
+        });
     });
 
     let checkEmptyInterval = setInterval(() => {
-        // console.log(Object.keys(namespaces))
         if(Object.keys(gameSocket['sockets']).length == 0) {
             delete io.nsps[namespace];
             if(namespaces[namespace] != null) {
