@@ -1,6 +1,6 @@
 const pg = require('pg');
-const helper = require('./baseHelper.js');
 
+const helper = require('./baseHelper.js');
 const { Pool } = pg;
 
 class DataBase{

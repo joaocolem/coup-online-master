@@ -4,7 +4,7 @@ import { useUser } from '../components/UserContext'; // Importa o hook useUser
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import './CadastroFormStyle.css';
-import  LanguageStrings from './utils/strings'
+import  LanguageStrings from './utils/strings';
 import { connectSocket } from './utils/socket_utils.js';
 
 const LoginScreen = () => {
@@ -56,6 +56,10 @@ const LoginScreen = () => {
     setRecaptcha(response);
   }
 
+  const handleRecuperarSenha = function() {
+    history.push('/recuperarSenha');
+  }
+
   return (
     <div className="login-container">
       <h2>Login</h2>
@@ -91,6 +95,9 @@ const LoginScreen = () => {
           >
             Login
           </button>
+          <div className="forgot-password">
+            <a href="" onClick={handleRecuperarSenha}>Forgot Password?</a>
+          </div>
         </div>
       </form>
     </div>

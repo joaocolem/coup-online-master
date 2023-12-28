@@ -147,6 +147,16 @@ openSocket = (gameSocket, namespace) => {
                 socket.emit('no-login');
             });
         });
+      
+       socket.on('recuperar-senha', email => {
+            utilities.sendemail(email)
+            .then(() => console.log('Enviado'))
+            .catch(err => console.log(err));
+        });
+
+        socket.on('redefinir-senha', data => {
+            console.log(data);
+        });
     });
 
     let checkEmptyInterval = setInterval(() => {
