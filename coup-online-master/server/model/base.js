@@ -78,6 +78,14 @@ class DataBase{
 
         return await response?.rows;
     }
+
+    async update(table, field, where, data) {
+        const query = `
+            UPDATE ${table}
+            SET ${field} = ${data.password}
+            
+        `;
+    }
 }
 
 module.exports = DataBase;

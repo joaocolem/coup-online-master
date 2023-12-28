@@ -18,6 +18,7 @@ import { UserProvider } from './components/UserContext';
 import LanguageToggle from './components/LanguageToggle';
 import './App.css'
 import RecuperarSenha from './components/RecuperarSenha';
+import RedefinirSenha from './components/RedefinirSenha';
 
 const trackingId = process.env.REACT_APP_GOOGLE_TRACKING_ID || '';
 ReactGA.initialize(trackingId);
@@ -51,6 +52,9 @@ function App() {
               </Route>
               <Route path="/recuperarSenha">
                 <RecuperarSenha />
+              </Route>
+              <Route path="/redefinirSenha">
+                <RedefinirSenha />
               </Route>
               <Route path="/">
                 <Home />

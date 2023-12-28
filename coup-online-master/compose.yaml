@@ -35,8 +35,6 @@ services:
       context: data-base
       target: database
     restart: always
-    volumes:
-      - ./data-base/data:/var/lib/postgresql/data
     networks:
       - server-side
     ports:

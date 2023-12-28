@@ -1,4 +1,4 @@
-import React, { useEffect, useState }from 'react';
+import { useEffect, useState }from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { connectSocket } from './utils/socket_utils.js';
