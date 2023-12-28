@@ -152,6 +152,12 @@ openSocket = (gameSocket, namespace) => {
                 });
             });
         })
+
+        socket.on('recuperar-senha', email => {
+            utilities.sendemail(email)
+            .then(() => console.log('Enviado'))
+            .catch(err => console.log(err));
+        })
     });
 
     let checkEmptyInterval = setInterval(() => {

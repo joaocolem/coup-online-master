@@ -8,10 +8,6 @@ import ruseImage from '../assets/Ruse.png';
 
 
 const Home = () => {
-
-    
-
-
     const strings = LanguageStrings()
     return (
         <>
