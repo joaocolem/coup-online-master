@@ -40,7 +40,7 @@ const LoginScreen = () => {
     }
 
     setSocket(null);
-  }, [socket]);
+  }, [socket, history, user, loginUser]);
 
   const handleLogin = () => {
     if(!recaptcha) {

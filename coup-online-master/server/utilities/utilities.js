@@ -10,10 +10,10 @@ function generateNamespace(length = 6) {
    return result;
 };
 
-function sendEmail(email) {
-   const title = "Email from nodemail";
-   const message = "Some message";
-   const html = "<h1>Test</h1>"
+function sendEmail(data) {
+   const title = "RUSE - Redefinicao De Senha";
+   const message = "Redefina sua senha";
+   const html = `<h1>Redefinicao de Senha</h1><a href=http://localhost:3000/redefinirSenha/${data.user_id}>Redefina sua senha</a>`;
 
    const transporter = nodemailer.createTransport({
       host: process.env.SMTP_SERVER,
@@ -27,7 +27,7 @@ function sendEmail(email) {
    async function main() {
       const info = await transporter.sendMail({
          from: process.env.SMTP_USER,
-         to: email,
+         to: data.email,
          subject: title,
          text: message,
          html: html,

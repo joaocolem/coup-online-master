@@ -17,7 +17,7 @@ class DataBase{
         this.#pool.on('error', (err, _) => {
             console.error('Error on Pool', err);
             process.exit(-1);
-        });   
+        });
     }
 
     async shutdown() {
@@ -34,14 +34,25 @@ class DataBase{
         return await this.#pool.query(query);
     }
 
-    async selectFrom(table, field = '*', where, data) {
+    async selectFrom(table, field = '*', where) {
         const query = `
             SELECT ${field}
             FROM ${table}
-            ${ where && data ? `WHERE ${where} = '${data}'` : ``};
+            ${ where && `WHERE ${where};`}
         `;
 
-        return await this.#pool.query(query)?.rows;
+        const res = await this.#pool.query(query);
+        return res.rows[0];
+    }
+
+    async update(table, field, where, data) {
+        const query=`
+            UPDATE ${table}
+            SET ${field} = ${data}
+            WHERE ${where};
+        `
+
+        return await this.#pool.query(query);
     }
 }
 
