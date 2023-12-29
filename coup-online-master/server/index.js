@@ -136,8 +136,8 @@ openSocket = (gameSocket, namespace) => {
 
         socket.on('request-login', (data) => {
             db
-            .selectFrom('users', '*', 'email', data.email)
-            .then( ([ dbData ]) => {
+            .selectFrom('users', '*', `email = '${data.email}'`, )
+            .then( (dbData) => {
                 if(!dbData) return socket.emit('no-login');
 
                 dbData.password === data.senha ? socket.emit('login-ok', dbData) : socket.emit('login-not-ok');
@@ -149,13 +149,18 @@ openSocket = (gameSocket, namespace) => {
         });
       
        socket.on('recuperar-senha', email => {
-            utilities.sendemail(email)
+            db
+            .selectFrom('users', '*', `email = '${email}'`)
+            .then( data => utilities.sendemail(data))
             .then(() => console.log('Enviado'))
             .catch(err => console.log(err));
         });
 
         socket.on('redefinir-senha', data => {
-            console.log(data);
+            db
+            .update('users', 'password', `user_id = ${data.userId}`, data.password)
+            .then(() => socket.emit('senha-redefinida'))
+            .catch( err => console.error(err));
         });
     });
 
