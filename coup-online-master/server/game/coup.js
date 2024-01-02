@@ -36,7 +36,7 @@ class CoupGame {
 
         for (let i = 0; i < this.players.length; i++) {
             const player = this.players[i];
-            player.money = 3;
+            player.money = 2;
             player.influences = [this.deck.pop(), this.deck.pop()];
             player.isDead = false;
         }

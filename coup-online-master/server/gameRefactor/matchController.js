@@ -1,10 +1,12 @@
-const Match = require("./match"); 
+const Match = require("./match");
+const MatchService = require("./matchService"); 
+const EventListener = require("./eventListener"); 
 const gameUtils = require("../utilities/gameUtils");
 
 class MatchController {
     constructor(players, gameSocket) {
         this.match = new Match(players, gameSocket);
-        this.startGame();
+        this.eventListener = new EventListener(gameSocket, players, this.match);
     }
 
     start() {
@@ -21,23 +23,32 @@ class MatchController {
         this.match.isRevealOpen = false;
         this.match.isChooseInfluenceOpen = false;
         this.match.isExchangeOpen = false;
-        this.match.aliveCount = this.players.length;
         this.match.votes = 0;
         this.match.deck = gameUtils.buildDeck();
 
-        for (let i = 0; i < this.players.length; i++) {
-            const player = this.players[i];
-            player.money = 3;
-            player.influences = [this.deck.pop(), this.deck.pop()];
+        for (let i = 0; i < this.match.players.length; i++) {
+            const player = this.match.players[i];
+            player.money = 2;
+            player.influences = [this.match.deck.pop(), this.match.deck.pop()];
             player.isDead = false;
         }
     }
 
     restartGame() {
-        this.gameSocket.emit('g-gameRestart', true);
+        this.match.gameSocket.emit('g-gameRestart', true);
     }
 
-    
+    listen() {
+        this.eventListener.listen();
+    }
+
+    updatePlayers() {
+        this.match.gameSocket.emit('g-updatePlayers', gameUtils.exportPlayers(JSON.parse(JSON.stringify(this.match.players))));
+    }
+
+    playTurn() {
+        this.match.playTurn();
+    }
 }
 
 module.exports = MatchController;

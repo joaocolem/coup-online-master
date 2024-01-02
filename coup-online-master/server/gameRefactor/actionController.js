@@ -9,15 +9,17 @@ const {
   } = require('./gameHandlers/actions');
   
 
-class GameActions {
-    static applyAction(action, match) {
+class ActionController {
+
+    
+    static #applyAction(action, match) {
         let logTarget = '';
 
         if (action.target) {
             logTarget = ` on ${action.target}`;
         }
 
-        this.gameSocket.emit("g-addLog", `${action.source} used ${action.action}${logTarget}`);
+        match.gameSocket.emit("g-addLog", `${action.source} used ${action.action}${logTarget}`);
         const execute = action.action;
         const target = action.target;
         const source = action.source;
@@ -48,4 +50,20 @@ class GameActions {
                 console.log('ERROR ACTION NOT FOUND');
         }
     }
+
+    static handleActionDecision(res, match) {
+       
+        const { action } = res;
+
+        if (match.actions[action.action].isChallengeable) {
+            match.openChallenge(action, match.actions[action.action].blockableBy.length > 0, match);
+        } else if (action.action === 'foreign_aid') {
+            match.isChallengeBlockOpen = true;
+            match.gameSocket.emit("g-openBlock", action);
+        } else {
+            this.#applyAction(action, match); 
+        }
+    }
 }
+
+module.exports = ActionController;
