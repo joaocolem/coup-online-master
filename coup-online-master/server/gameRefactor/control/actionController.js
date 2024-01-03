@@ -1,36 +1,13 @@
-const {
-    IncomeHandler,
-  } = require('../gameHandlers/actions/incomeHandler');
-  
-  const {
-    ForeignAidHandler,
-  } = require('../gameHandlers/actions/foreingAindHandler');
-  
-  const {
-    CoupHandler,
-  } = require('../gameHandlers/actions/coupHandler');
-  
-  const {
-    TaxHandler,
-  } = require('../gameHandlers/actions/taxHandler');
-  
-  const {
-    AssassinateHandler,
-  } = require('../gameHandlers/actions/assassinateHandler');
-  
-  const {
-    ExchangeHandler,
-  } = require('../gameHandlers/actions/exchangeHandler');
-  
-  const {
-    StealHandler,
-  } = require('../gameHandlers/actions/stealHandler');
-  
-  
+const IncomeHandler = require('../gameHandlers/actions/incomeHandler');
+const ForeignAidHandler = require('../gameHandlers/actions/foreingAindHandler');
+const CoupHandler = require('../gameHandlers/actions/coupHandler');
+const TaxHandler = require('../gameHandlers/actions/taxHandler');
+const AssassinateHandler = require('../gameHandlers/actions/assassinateHandler');
+const ExchangeHandler = require('../gameHandlers/actions/exchangeHandler');
+const StealHandler = require('../gameHandlers/actions/stealHandler');
 
 class ActionController {
 
-    
     static #applyAction(action, match) {
         let logTarget = '';
 
@@ -70,7 +47,7 @@ class ActionController {
         }
     }
 
-    static handleActionDecision(res, match) {
+    static handleActionDecision(match, res) {
        
         const { action } = res;
 

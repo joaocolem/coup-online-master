@@ -1,5 +1,5 @@
 const Match = require("./match");
-const EventListener = require("./eventListener"); 
+const EventListener = require("./EventListener"); 
 const gameUtils = require("../utilities/gameUtils");
 
 class MatchController {
