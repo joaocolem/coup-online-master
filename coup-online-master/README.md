@@ -1,7 +1,5 @@
 # Coup Online
 
-This project is an online port of the card game Coup. It is currently hosted at [here](https://www.chickenkoup.com/).
-
 Perfect to play with friends during quarantine c:
 ## About the project
 This project consists of two parts
@@ -10,7 +8,6 @@ This project consists of two parts
 
 Technologies: React.js, Node.js, Express.js, Socket.io
 
-Deployment: Heroku
 
 ## Features
 
@@ -41,9 +38,7 @@ In the client, there is an event log showing all players the last 4 actions to h
 A script is run to destroy game instances that have 0 connections.
 
 
-### Chicken Drumstick Emoji
 
-Courtesy of https://twemoji.twitter.com/
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
