@@ -2,7 +2,7 @@ const express = require('express');
 const moment = require('moment');
 const cors = require('cors');
 
-const MatchController = require('./gameRefactor/matchController');
+const CoupGame = require('./game/coup');
 const utilities = require('./utilities/utilities');
 const DataBase = require('./model/base.js')
 
@@ -178,7 +178,7 @@ openSocket = (gameSocket, namespace) => {
 }
 
 startGame = (players, gameSocket, namespace) => {
-    namespaces[namespace.substring(1)] = new MatchController(players, gameSocket);
+    namespaces[namespace.substring(1)] = new CoupGame(players, gameSocket);
     namespaces[namespace.substring(1)].start();
 }
 

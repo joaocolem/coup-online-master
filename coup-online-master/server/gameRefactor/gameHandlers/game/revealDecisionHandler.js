@@ -1,4 +1,4 @@
-const gameUtils = require('../../utilities/gameUtils');
+const gameUtils = require('../../../utilities/gameUtils');
 
 class RevealHandler {
     static handleRevealDecision(match, res) {

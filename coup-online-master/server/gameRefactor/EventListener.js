@@ -1,24 +1,39 @@
 const {
     BlockChallengeDecisionHandler,
-    BlockAssassinateProblemHandler,
+  } = require('./gameHandlers/challengers/blockChallengeDecisionHandler');
+
+  const {
     BlockDecisionHandler,
-  } = require('./gameHandlers/challengers');
+  } = require('./gameHandlers/challengers/blockDecisionHandler');
 
-const {
+  const {
+    ChallengeDecisionHandler,
+  } = require('./gameHandlers/challengers/challengeDecisionHandler');
+
+  const {
     ChooseExchangeDecisionHandler,
+  } = require('./gameHandlers/chooseCards/chooseExchangeDecisionHandler');
+  
+  const {
     ChooseInfluenceDecisionHandler,
-  } = require('./gameHandlers/chooseCards');  
-
+  } = require('./gameHandlers/chooseCards/chooseInfluenceDecisionHandler');
+  
   const {
     PlayAgainHandler,
-    RevealDecisionHandler,
-    CoinHandler,
-  } = require('./gameHandlers/game');  
-
+  } = require('./gameHandlers/game/playAgainHandler');
+  
   const {
-    ActionController
-  } = require('ActionController');  
-
+    RevealDecisionHandler,
+  } = require('./gameHandlers/game/revealDecisionHandler');
+  
+  const {
+    CoinHandler,
+  } = require('./gameHandlers/game/coinHandler');
+  
+  const {
+    ActionController,
+  } = require('./control/actionController');
+  
 
 class EventListener {
     static listen(gameSocket, players, match) {
