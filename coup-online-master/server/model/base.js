@@ -1,12 +1,11 @@
-const pg = require('pg');
+const { Pool } = require('pg');
 
 const helper = require('./baseHelper.js');
-const { Pool } = pg;
 
 class DataBase{
     #pool;
 
-    constructor() {    
+    constructor() {
         this.#pool = new Pool({
             host: process.env.PGHOST,
             user: process.env.POSTGRES_USER,
