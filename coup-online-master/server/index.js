@@ -2,7 +2,7 @@ const express = require('express');
 const moment = require('moment');
 const cors = require('cors');
 
-const MatchController = require('./gameRefactor/matchController.js');
+const MatchController = require('./gameRefactor/matchController');
 const utilities = require('./utilities/utilities');
 const DataBase = require('./model/base.js')
 

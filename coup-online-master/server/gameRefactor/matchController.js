@@ -1,5 +1,4 @@
 const Match = require("./match");
-const MatchService = require("./matchService"); 
 const EventListener = require("./eventListener"); 
 const gameUtils = require("../utilities/gameUtils");
 
