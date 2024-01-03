@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const utilities = require('./utilities/utilities');
-const GameSocket = require('./game/GameSocket')
+const GameSocket = require('./gameRefactor/GameSocket')
 
 const app = express();
 
