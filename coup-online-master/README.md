@@ -1,6 +1,5 @@
 # Coup Online
 
-Perfect to play with friends during quarantine c:
 ## About the project
 This project consists of two parts
 1. The React.js client
