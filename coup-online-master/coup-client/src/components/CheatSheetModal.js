@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
 import CheatSheet from '../assets/CheatSheet.svg';
+import LanguageStrings from './utils/strings';
+import ActionsTable from './ActionsTable';
 
 const CheatSheetModal = () => {
     const [showCheatSheetModal, setShowCheatSheetModal] = useState(false);
+    const strings = LanguageStrings()
 
     const handleOpenCheatSheetModal = () => {
         setShowCheatSheetModal(true);
@@ -16,7 +19,8 @@ const CheatSheetModal = () => {
     return (
         <>
             <div className="CheatSheet" onClick={handleOpenCheatSheetModal}>
-                <p>Cheat Sheet</p>
+                <p>{strings.cheatSheet}&nbsp;</p>
+
                 <svg className="InfoIcon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 21 22">
                     <g id="more_info" data-name="more info" transform="translate(-39 -377)">
                         <g id="Ellipse_1" data-name="Ellipse 1" className="cls-1" transform="translate(39 377)">
@@ -53,7 +57,7 @@ const CheatSheetModal = () => {
                 </div>
 
                 <div className="CheatSheetContainer">
-                    <img src={CheatSheet} alt="Cheat-Sheet" />
+                    <ActionsTable />
                 </div>
             </ReactModal>
         </>

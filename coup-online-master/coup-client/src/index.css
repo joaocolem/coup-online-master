@@ -11,7 +11,11 @@ code {
   font-family: 'Muli', sans-serif;
 }
 
-p, b, h1,h2,h3{
+p,
+b,
+h1,
+h2,
+h3 {
   font-family: 'Muli', sans-serif;
 }
 
@@ -23,10 +27,12 @@ input {
   outline: none;
   transition: 0.5s;
 }
+
 input[type=text]:focus {
   border: 2px solid #555;
 }
-button{
+
+button {
   cursor: pointer;
 }
 
@@ -48,27 +54,28 @@ button{
   padding: 5px;
   transition-duration: 0.3s;
 }
-.website-link:hover{
+
+.website-link:hover {
   color: #FFFFFF;
   background-color: #2B2B2B;
 }
 
-.createGameContainer, .joinGameContainer {
+.createGameContainer,
+.joinGameContainer {
   position: absolute;
-  top:20VH;
+  top: 20VH;
   margin-left: 12%;
   width: 76%;
 }
 
-.footer{
+.footer {
   position: absolute;
   width: 90VW;
   margin-left: 5VW;
   bottom: 20px;
 }
 
-.homeContainer{
-  position: absolute;
+.homeContainer {
   width: 90VW;
   margin-left: 5VW;
   top: 8VH;
@@ -81,14 +88,12 @@ button{
   width: 54px;
 }
 
-.homeContainer img{
-  width: 100px;
-  height: 100px;
+.homeContainer img {
   margin-top: 40px;
   margin-bottom: 40px;
 }
 
-.home{
+.home {
   padding: 5px;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -114,7 +119,8 @@ button{
   cursor: pointer;
 }
 
-.createButton, .joinButton{
+.createButton,
+.joinButton {
   min-width: 100px;
   height: 30px;
   border-radius: 5px;
@@ -130,11 +136,12 @@ button{
   font-size: 14px;
 }
 
-.createButton:disabled, .joinButton:disabled{
+.createButton:disabled,
+.joinButton:disabled {
   background-color: #2B2B2B;
 }
 
-.startGameButton{
+.startGameButton {
   /* min-width: 100px; */
   /* height: 30px; */
   border-radius: 5px;
@@ -173,10 +180,12 @@ button{
   font-size: 18px;
   cursor: pointer;
 }
-.readyUnit b{
+
+.readyUnit b {
   text-align: right;
 }
 
-.readyUnit p, .readyUnit b{
+.readyUnit p,
+.readyUnit b {
   color: #ffffff
 }

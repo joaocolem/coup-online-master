@@ -20,14 +20,28 @@ const LanguageToggle = () => {
         zIndex: 9999, // Defina um valor alto para manter em primeiro plano
       }}
     >
+      {/* Exibir a bandeira com base no idioma */}
       <span style={{ marginRight: '8px', color: language === 'en' ? '#e44d26' : '#4caf50' }}>
-        {language === 'en' ? 'EN' : 'PT'}
+        {language === 'en' ? (
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg"
+            alt="USA Flag"
+            style={{ width: '24px', height: '16px' }}
+          />
+        ) : (
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"
+            alt="Brazil Flag"
+            style={{ width: '24px', height: '16px' }}
+          />
+        )}
       </span>
+
       <Switch
         checked={language === 'en'}
         onChange={toggleLanguage}
-        onColor="#e44d26" 
-        offColor="#4caf50" 
+        onColor="#0033a0"
+        offColor="#4caf50"
         onHandleColor="#fff"
         offHandleColor="#fff"
         handleDiameter={25}
