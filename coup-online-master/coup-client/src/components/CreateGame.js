@@ -3,15 +3,15 @@ import io from 'socket.io-client';
 import { ReactSortable } from 'react-sortablejs';
 import Coup from './game/Coup';
 import axios from 'axios';
-import { useUser} from './UserContext'
-import  LanguageStrings from './utils/strings'
+import { useUser } from './UserContext'
+import LanguageStrings from './utils/strings'
 
 
-const baseUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+const baseUrl = process.env.REACT_APP_SERVER_PORT || 'http://localhost:8000';
 
 const CreateGame = () => {
     const strings = LanguageStrings()
-    const {user} = useUser();
+    const { user } = useUser();
 
     const [name, setName] = useState(user.nickname ?? '');
     const [roomCode, setRoomCode] = useState('');
