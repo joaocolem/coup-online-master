@@ -26,22 +26,27 @@ const port = 8000;
 
 let namespaces = {}; //AKA party rooms
 
+const express = require("express");
 
-app.get('/createNamespace', function (req, res) { 
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
+app.listen(3000, () => console.log("Server ready on port 3000."));
+
+app.get('/createNamespace', function (req, res) {
     let newNamespace = '';
-    while(newNamespace === '' || (newNamespace in namespaces)) {
+    while (newNamespace === '' || (newNamespace in namespaces)) {
         newNamespace = utilities.generateNamespace(); //default length 6
     }
     const newSocket = io.of(`/${newNamespace}`);
     openSocket(newSocket, `/${newNamespace}`);
     namespaces[newNamespace] = null;
     console.log(newNamespace + " CREATED")
-    res.json({namespace: newNamespace});
+    res.json({ namespace: newNamespace });
 })
 
 app.get('/exists/:namespace', function (req, res) { //returns bool
     const namespace = req.params.namespace;
-    res.json({exists: (namespace in namespaces)});
+    res.json({ exists: (namespace in namespaces) });
 })
 
 //game namespace: oneRoom
@@ -61,14 +66,14 @@ openSocket = (gameSocket, namespace) => {
         console.log(`player ${players.length} has connected`);
         socket.join(socket.id);
         console.log('socket joined ' + socket.id);
-        const index = players.length-1;
+        const index = players.length - 1;
 
         const updatePartyList = () => {
             partyMembers = players.map(x => {
-                return {name: x.player, socketID: x.socket_id, isReady: x.isReady}
+                return { name: x.player, socketID: x.socket_id, isReady: x.isReady }
             }).filter(x => x.name != '')
             console.log(partyMembers);
-            gameSocket.emit('partyUpdate', partyMembers) ;
+            gameSocket.emit('partyUpdate', partyMembers);
         }
 
         // socket.on('g-actionDecision', (action) => {
@@ -77,15 +82,15 @@ openSocket = (gameSocket, namespace) => {
 
         socket.on('setName', (name) => { //when client joins, it will immediately set its name
             console.log(started)
-            if(started) {
+            if (started) {
                 gameSocket.to(players[index].socket_id).emit("joinFailed", 'game_already_started');
                 return
             }
-            if(!players.map(x => x.player).includes(name)){
-                if(partyMembers.length >= 6) {
+            if (!players.map(x => x.player).includes(name)) {
+                if (partyMembers.length >= 6) {
                     gameSocket.to(players[index].socket_id).emit("joinFailed", 'party_full');
                 } else {
-                    if(partyMembers.length == 0) {
+                    if (partyMembers.length == 0) {
                         partyLeader = players[index].socket_id;
                         players[index].isReady = true;
                         gameSocket.to(players[index].socket_id).emit("leader");
@@ -96,10 +101,10 @@ openSocket = (gameSocket, namespace) => {
                     updatePartyList();
                     gameSocket.to(players[index].socket_id).emit("joinSuccess", players[index].socket_id);
                 }
-                
+
             } else {
                 gameSocket.to(players[index].socket_id).emit("joinFailed", 'name_taken');
-            }  
+            }
         })
         socket.on('setReady', (isReady) => { //when client is ready, they will update this
             console.log(`${players[index].player} is ready`);
@@ -113,16 +118,16 @@ openSocket = (gameSocket, namespace) => {
             gameSocket.emit('startGame');
             startGame(players, gameSocket, namespace);
         })
-    
+
         socket.on('disconnect', () => {
             console.log('disconnected: ' + socket.id);
-            players.map((x,index) => {
-                if(x.socket_id == socket.id) {
+            players.map((x, index) => {
+                if (x.socket_id == socket.id) {
                     gameSocket.emit('g-addLog', `${JSON.stringify(players[index].player)} has disconnected`);
                     gameSocket.emit('g-addLog', 'Please recreate the game.');
                     gameSocket.emit('g-addLog', 'Sorry for the inconvenience (シ_ _)シ');
-                    players[index].player ='';
-                    if(socket.id === partyLeader) {
+                    players[index].player = '';
+                    if (socket.id === partyLeader) {
                         console.log('Leader has disconnected');
                         gameSocket.emit('leaderDisconnect', 'leader_disconnected');
                         socket.removeAllListeners();
@@ -139,13 +144,13 @@ openSocket = (gameSocket, namespace) => {
     });
     let checkEmptyInterval = setInterval(() => {
         // console.log(Object.keys(namespaces))
-        if(Object.keys(gameSocket['sockets']).length == 0) {
+        if (Object.keys(gameSocket['sockets']).length == 0) {
             delete io.nsps[namespace];
-            if(namespaces[namespace] != null) {
+            if (namespaces[namespace] != null) {
                 delete namespaces[namespace.substring(1)]
             }
             clearInterval(checkEmptyInterval)
-            console.log(namespace 
+            console.log(namespace
                 + 'deleted')
         }
     }, 10000)
@@ -156,6 +161,7 @@ startGame = (players, gameSocket, namespace) => {
     namespaces[namespace.substring(1)].start();
 }
 
-server.listen(process.env.PORT || port, function(){
+server.listen(process.env.PORT || port, function () {
     console.log(`listening on ${process.env.PORT || port}`);
 });
+module.exports = app;
