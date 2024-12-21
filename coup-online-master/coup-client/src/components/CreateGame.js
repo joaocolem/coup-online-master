@@ -7,7 +7,7 @@ import { useUser } from './UserContext'
 import LanguageStrings from './utils/strings'
 
 
-const baseUrl = "https://coup-online-master-gzzi.vercel.app/" || 'http://localhost:8000';
+const baseUrl = "https://coup-online-master.vercel.app" || 'http://localhost:8000';
 
 const CreateGame = () => {
     const strings = LanguageStrings()
